@@ -130,6 +130,7 @@ body{
   left:16px;
   top: 32vh;   /* ✅ dentro de la mitad superior */
   z-index:5;
+  display:none !important;
 }
 
 .centerContent{
