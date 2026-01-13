@@ -306,10 +306,11 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .drawer.open{ display:block; }
 
-/* ✅ FIX: backdrop debajo del panel */
+/* ✅ Overlay REMOVIDO: no oscurece y no bloquea clicks */
 .drawer__backdrop{
   position:absolute; inset:0;
-  background: rgba(0,0,0,.45);
+  background: transparent;
+  pointer-events: none; /* 👈 clave */
   z-index: 1;
 }
 .drawer__panel{
@@ -353,11 +354,12 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .sheet.open{ display:block; }
 
-/* ✅ FIX: backdrop debajo del panel */
+/* ✅ Overlay REMOVIDO: no oscurece y no bloquea clicks */
 .sheet__backdrop{
   position:absolute;
   inset:0;
-  background: rgba(0,0,0,.45);
+  background: transparent;
+  pointer-events: none; /* 👈 clave */
   z-index: 1;
 }
 .sheet__panel{
@@ -494,7 +496,6 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .lightbox.open{ display:block; }
 
-/* ✅ FIX recomendado: backdrop debajo de imagen/botones */
 .lightbox__backdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.70);
