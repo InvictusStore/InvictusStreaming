@@ -142,7 +142,7 @@ body{
 }
 
 .brandTitle{
-  margin: 90px 0 10px;
+  margin: 52px 0 10px;
   font-size: 52px;
   font-weight: 800;
   letter-spacing: .28em;
@@ -173,6 +173,12 @@ body{
   display:flex;
   flex-direction:column;
   gap: 14px;
+}
+
+.stars5{
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,.92);
 }
 
 .glassCard{
