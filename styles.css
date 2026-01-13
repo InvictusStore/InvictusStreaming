@@ -7,27 +7,60 @@
   --shadow: 0 12px 40px rgba(0,0,0,.35);
   --radius: 26px;
   --primary: #fc306d;
+
+  /* Reviews UI vars */
+  --reviewBg: rgba(0,0,0,.10);
+  --reviewBorder: rgba(255,255,255,.12);
+  --reviewText: var(--text);
+  --reviewMuted: rgba(255,255,255,.65);
+  --reviewStar: rgba(255,255,255,.92);
+  --reviewDivider: rgba(255,255,255,.14);
+  --reviewAction: rgba(255,255,255,.65);
 }
 
 *{ box-sizing:border-box; }
-html,body{ height:100%; margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
-body{ background:#0b0b0f; color:var(--text); }
 
+html,body{
+  height:100%;
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+/* ✅ Fondo general negro */
+body{
+  background:#000;
+  color:var(--text);
+}
+
+/* =========================
+   ✅ HERO (imagen 50% + abajo negro)
+   ========================= */
 .hero{
   min-height:100vh;
   position:relative;
   overflow:hidden;
+  background:#000; /* ✅ el resto (abajo) negro */
 }
 
+/* ✅ Imagen SOLO arriba (mitad de pantalla) */
 .hero__bg{
-  position:absolute; inset:0;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height: 50vh; /* ✅ mitad de pantalla */
   background-size:cover;
   background-position:center;
   transform: scale(1.03);
 }
 
+/* ✅ Overlay SOLO arriba (mitad de pantalla) */
 .hero__overlay{
-  position:absolute; inset:0;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height: 50vh; /* ✅ mitad de pantalla */
   background: rgba(18, 18, 24, .55);
   backdrop-filter: blur(2px);
 }
@@ -82,10 +115,11 @@ body{ background:#0b0b0f; color:var(--text); }
   stroke-linejoin: round;
 }
 
+/* ✅ Recomendado: mantener el botón dentro del área de imagen */
 .floatingSearch{
   position:absolute;
   left:16px;
-  top: 40%;
+  top: 32vh;   /* ✅ dentro de la mitad superior */
   z-index:5;
 }
 
@@ -256,7 +290,6 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .drawer.open{ display:block; }
 
-/* backdrop debajo del panel */
 .drawer__backdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.45);
@@ -275,7 +308,6 @@ body{ background:#0b0b0f; color:var(--text); }
   padding: 16px;
   z-index: 2;
 }
-
 .drawer__header{
   display:flex; align-items:center; justify-content:space-between;
   margin-bottom: 16px;
@@ -303,7 +335,7 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .sheet.open{ display:block; }
 
-/* ✅ SIN OVERLAY OSCURO en modales (ratings / publicar reseña) */
+/* ✅ SIN overlay oscuro en modales */
 .sheet__backdrop{
   display:none !important;
   pointer-events:none !important;
@@ -315,7 +347,7 @@ body{ background:#0b0b0f; color:var(--text); }
   transform: translateX(-50%);
   bottom: 0;
   width: min(560px, 100%);
-  height: 55vh; /* mitad aprox */
+  height: 55vh;
   background: rgba(20, 20, 28, .92);
   border-top-left-radius: 26px;
   border-top-right-radius: 26px;
@@ -358,12 +390,14 @@ body{ background:#0b0b0f; color:var(--text); }
   color: var(--muted);
   font-weight: 800;
 }
+
 .breakdown{
   display:flex;
   flex-direction:column;
   gap: 10px;
   margin-top: 12px;
 }
+
 .rowBar{
   display:grid;
   grid-template-columns: 44px 1fr 50px;
@@ -381,9 +415,16 @@ body{ background:#0b0b0f; color:var(--text); }
   width: 0%;
   background: rgba(255,255,255,.7);
 }
+
+/* ✅ Para cuando moviste el botón debajo de la tabla */
 .sheet__actions{
   margin-top: 16px;
 }
+.sheet__actions--below{
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
 .primaryBtn{
   width: 100%;
   height: 48px;
@@ -488,36 +529,27 @@ body{ background:#0b0b0f; color:var(--text); }
 .lightbox__nav.right{ right: 14px; }
 
 /* =========================
-   ✅ Reseñas estilo (foto circular + estrellas + día + servicio + texto + "Útil")
+   ✅ Reseñas dentro del sheet (formato nuevo)
    ========================= */
-:root{
-  --reviewBg: rgba(0,0,0,.10);
-  --reviewBorder: rgba(255,255,255,.12);
-  --reviewText: var(--text);
-  --reviewMuted: rgba(255,255,255,.65);
-  --reviewStar: rgba(255,255,255,.92);
-  --reviewDivider: rgba(255,255,255,.14);
-  --reviewAction: rgba(255,255,255,.65);
-}
-
-/* Contenedor blanco dentro del sheet (como tu screenshot) */
 .sheetReviewsWrap{
   margin-top: 14px;
   padding: 14px;
   border-radius: 22px;
-  background: rgba(20, 20, 28, .92);
+  background: rgba(255,255,255,.96); /* ✅ “fondo blanco” */
   color: #111;
   border: 1px solid rgba(255,255,255,.20);
   box-shadow: 0 14px 40px rgba(0,0,0,.22);
-  /* override variables para look blanco */
+
+  /* variables para estilo claro */
   --reviewBg: transparent;
-  --reviewBorder: rgba(0,0,0,.08);
+  --reviewBorder: rgba(0,0,0,.10);
   --reviewText: #111;
   --reviewMuted: rgba(0,0,0,.55);
   --reviewStar: #f5b301;
   --reviewDivider: rgba(0,0,0,.10);
   --reviewAction: rgba(0,0,0,.60);
 }
+
 .sheetReviewsHeader{
   display:flex;
   align-items:baseline;
@@ -540,7 +572,6 @@ body{ background:#0b0b0f; color:var(--text); }
   flex-direction:column;
 }
 
-/* Item */
 .reviewItem{
   display:flex;
   gap: 12px;
@@ -551,6 +582,7 @@ body{ background:#0b0b0f; color:var(--text); }
   border-bottom: none;
   padding-bottom: 0;
 }
+
 .reviewItem .reviewAvatar{
   width: 54px;
   height: 54px;
@@ -565,16 +597,19 @@ body{ background:#0b0b0f; color:var(--text); }
   object-fit: cover;
   display:block;
 }
+
 .reviewContent{
   flex:1;
   min-width:0;
 }
+
 .reviewStarsRow{
   font-size: 18px;
   letter-spacing: 2px;
   color: var(--reviewStar);
   line-height: 1;
 }
+
 .reviewMeta{
   margin-top: 6px;
   display:flex;
@@ -583,13 +618,12 @@ body{ background:#0b0b0f; color:var(--text); }
   flex-wrap: wrap;
   color: var(--reviewText);
 }
-.reviewMeta .reviewName{
-  font-weight: 900;
-}
+.reviewMeta .reviewName{ font-weight: 900; }
 .reviewMeta .reviewDay{
   font-weight: 800;
   color: var(--reviewMuted);
 }
+
 .reviewService{
   margin-top: 3px;
   font-weight: 800;
@@ -599,12 +633,14 @@ body{ background:#0b0b0f; color:var(--text); }
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .reviewText2{
   margin-top: 10px;
   color: var(--reviewText);
   line-height: 1.35;
   font-weight: 500;
 }
+
 .helpfulRow{
   margin-top: 12px;
   display:flex;
