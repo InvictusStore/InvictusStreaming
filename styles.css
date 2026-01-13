@@ -26,7 +26,6 @@ body{ background:#0b0b0f; color:var(--text); }
   transform: scale(1.03);
 }
 
-/* OJO: este overlay es DEL DISEÑO, oscurece siempre el fondo */
 .hero__overlay{
   position:absolute; inset:0;
   background: rgba(18, 18, 24, .55);
@@ -209,56 +208,6 @@ body{ background:#0b0b0f; color:var(--text); }
   gap: 12px;
 }
 
-.review{
-  display:flex;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 18px;
-  background: rgba(0,0,0,.10);
-  border: 1px solid rgba(255,255,255,.12);
-}
-
-.reviewAvatar{
-  width: 44px; height: 44px;
-  border-radius: 999px;
-  overflow:hidden;
-  border: 1px solid rgba(255,255,255,.18);
-  flex: 0 0 auto;
-}
-.reviewAvatar img{ width:100%; height:100%; object-fit: cover; }
-
-.reviewBody{ flex:1; }
-.reviewTop{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-}
-.reviewName{ font-weight:800; }
-.reviewStars{ color: rgba(255,255,255,.9); font-weight:800; }
-.reviewText{ margin: 6px 0 0; color: rgba(255,255,255,.78); line-height: 1.25; }
-
-.likeRow{
-  margin-top: 10px;
-  display:flex;
-  justify-content:flex-end;
-  gap: 8px;
-}
-.likeBtn{
-  border:none;
-  background: rgba(255,255,255,.10);
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 999px;
-  padding: 8px 12px;
-  cursor:pointer;
-  font-weight:800;
-  backdrop-filter: blur(10px);
-}
-.likeBtn.liked{
-  border-color: rgba(252,48,109,.65);
-}
-
 .bottomNav{
   position:fixed;
   left: 50%;
@@ -307,6 +256,12 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .drawer.open{ display:block; }
 
+/* backdrop debajo del panel */
+.drawer__backdrop{
+  position:absolute; inset:0;
+  background: rgba(0,0,0,.45);
+  z-index: 1;
+}
 .drawer__panel{
   position:absolute;
   top:0; left:0;
@@ -339,9 +294,6 @@ body{ background:#0b0b0f; color:var(--text); }
   margin-bottom: 10px;
 }
 
-/* ✅ Backdrop del drawer apagado (no oscurece, no bloquea) */
-.drawer__backdrop{ display:none !important; }
-
 /* Sheets */
 .sheet{
   position:fixed;
@@ -351,13 +303,19 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .sheet.open{ display:block; }
 
+/* ✅ SIN OVERLAY OSCURO en modales (ratings / publicar reseña) */
+.sheet__backdrop{
+  display:none !important;
+  pointer-events:none !important;
+}
+
 .sheet__panel{
   position:absolute;
   left: 50%;
   transform: translateX(-50%);
   bottom: 0;
   width: min(560px, 100%);
-  height: 55vh;
+  height: 55vh; /* mitad aprox */
   background: rgba(20, 20, 28, .92);
   border-top-left-radius: 26px;
   border-top-right-radius: 26px;
@@ -443,9 +401,6 @@ body{ background:#0b0b0f; color:var(--text); }
   font-size: 12px;
 }
 
-/* ✅ Backdrop del sheet apagado (no oscurece, no bloquea) */
-.sheet__backdrop{ display:none !important; }
-
 /* Form */
 .form{ display:flex; flex-direction:column; gap: 12px; }
 .field span{
@@ -487,13 +442,11 @@ body{ background:#0b0b0f; color:var(--text); }
   display:none;
 }
 .lightbox.open{ display:block; }
-
 .lightbox__backdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.70);
   z-index: 1;
 }
-
 .lightbox img{
   position:absolute;
   inset:0;
@@ -533,6 +486,151 @@ body{ background:#0b0b0f; color:var(--text); }
 }
 .lightbox__nav.left{ left: 14px; }
 .lightbox__nav.right{ right: 14px; }
+
+/* =========================
+   ✅ Reseñas estilo (foto circular + estrellas + día + servicio + texto + "Útil")
+   ========================= */
+:root{
+  --reviewBg: rgba(0,0,0,.10);
+  --reviewBorder: rgba(255,255,255,.12);
+  --reviewText: var(--text);
+  --reviewMuted: rgba(255,255,255,.65);
+  --reviewStar: rgba(255,255,255,.92);
+  --reviewDivider: rgba(255,255,255,.14);
+  --reviewAction: rgba(255,255,255,.65);
+}
+
+/* Contenedor blanco dentro del sheet (como tu screenshot) */
+.sheetReviewsWrap{
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.96);
+  color: #111;
+  border: 1px solid rgba(255,255,255,.20);
+  box-shadow: 0 14px 40px rgba(0,0,0,.22);
+  /* override variables para look blanco */
+  --reviewBg: transparent;
+  --reviewBorder: rgba(0,0,0,.08);
+  --reviewText: #111;
+  --reviewMuted: rgba(0,0,0,.55);
+  --reviewStar: #f5b301;
+  --reviewDivider: rgba(0,0,0,.10);
+  --reviewAction: rgba(0,0,0,.60);
+}
+.sheetReviewsHeader{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.sheetReviewsTitle{
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+.sheetReviewsCount{
+  font-weight: 800;
+  color: rgba(0,0,0,.55);
+  white-space: nowrap;
+}
+.sheetReviewsList{
+  display:flex;
+  flex-direction:column;
+}
+
+/* Item */
+.reviewItem{
+  display:flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--reviewDivider);
+}
+.reviewItem:last-child{
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.reviewItem .reviewAvatar{
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  overflow:hidden;
+  border: 1px solid var(--reviewBorder);
+  flex: 0 0 auto;
+}
+.reviewItem .reviewAvatar img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+}
+.reviewContent{
+  flex:1;
+  min-width:0;
+}
+.reviewStarsRow{
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--reviewStar);
+  line-height: 1;
+}
+.reviewMeta{
+  margin-top: 6px;
+  display:flex;
+  align-items:center;
+  gap: 6px;
+  flex-wrap: wrap;
+  color: var(--reviewText);
+}
+.reviewMeta .reviewName{
+  font-weight: 900;
+}
+.reviewMeta .reviewDay{
+  font-weight: 800;
+  color: var(--reviewMuted);
+}
+.reviewService{
+  margin-top: 3px;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--reviewMuted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.reviewText2{
+  margin-top: 10px;
+  color: var(--reviewText);
+  line-height: 1.35;
+  font-weight: 500;
+}
+.helpfulRow{
+  margin-top: 12px;
+  display:flex;
+  justify-content:flex-start;
+}
+.helpfulBtn{
+  border:none;
+  background: transparent;
+  color: var(--reviewAction);
+  font-weight: 900;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 6px 2px;
+}
+.helpfulBtn .heart{
+  font-size: 20px;
+  line-height: 1;
+}
+.helpfulBtn.liked{
+  color: var(--primary);
+}
+.helpfulBtn span{
+  font-weight: 900;
+}
 
 @media (max-width: 420px){
   .brandTitle{ font-size: 44px; letter-spacing: .22em; }

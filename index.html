@@ -4,184 +4,188 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width,initial-scale=1,viewport-fit=cover"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <title>Invictus Streaming</title>
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Tipografía parecida (puedes cambiarla luego) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
   </head>
 
   <body>
-    <!-- Fondo/Hero -->
-    <div id="hero" class="hero">
+    <main class="hero" id="hero">
       <div class="hero__bg" id="heroBg"></div>
       <div class="hero__overlay"></div>
 
-      <!-- Top Bar -->
+      <!-- Top bar -->
       <header class="topbar">
-        <button class="glassBtn iconBtn" id="btnMenu" aria-label="Menú">
-          <!-- icon hamburguesa -->
-          <svg viewBox="0 0 24 24" class="icon">
-            <path d="M4 6h16M4 12h16M4 18h16" />
+        <button class="iconBtn glassBtn" id="btnMenu" aria-label="Abrir menú">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h16M4 17h16" />
           </svg>
         </button>
 
-        <button class="glassPill" id="btnLogin" type="button">
-          Iniciar sesión
-        </button>
+        <button class="glassPill" id="btnLogin">Siguiendo</button>
 
-        <button class="glassBtn iconBtn" id="btnShare" aria-label="Compartir">
-          <!-- icon share -->
-          <svg viewBox="0 0 24 24" class="icon">
-            <path d="M16 8a3 3 0 10-2.83-4H13a3 3 0 003 4zm-8 8a3 3 0 10-2.83-4H5a3 3 0 003 4zm8 8a3 3 0 10-2.83-4H13a3 3 0 003 4z"/>
-            <path d="M8 14l8-4M8 10l8 4" />
+        <button class="iconBtn glassBtn" id="btnShare" aria-label="Compartir">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path
+              d="M15 8a3 3 0 1 0-2.83-4"
+            ></path>
+            <path d="M16 8l-8 4"></path>
+            <path d="M8 12l8 4"></path>
+            <path
+              d="M9 20a3 3 0 1 0-2.83-4"
+            ></path>
+            <path
+              d="M21 12a3 3 0 1 0-2.83-4"
+            ></path>
           </svg>
         </button>
       </header>
 
-      <!-- Botón búsqueda (solo visual por ahora) -->
-      <button class="glassBtn floatingSearch iconBtn" id="btnSearch" aria-label="Buscar">
-        <svg viewBox="0 0 24 24" class="icon">
-          <path d="M10.5 3a7.5 7.5 0 105.2 12.9l3.4 3.4 1.4-1.4-3.4-3.4A7.5 7.5 0 0010.5 3z"/>
-          <path d="M10.5 5a5.5 5.5 0 110 11 5.5 5.5 0 010-11z"/>
-        </svg>
-      </button>
+      <!-- Floating search -->
+      <div class="floatingSearch">
+        <button class="iconBtn glassBtn" id="btnSearch" aria-label="Buscar">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path
+              d="M21 21l-4.35-4.35"
+            ></path>
+            <circle cx="11" cy="11" r="7"></circle>
+          </svg>
+        </button>
+      </div>
 
-      <!-- Centro: título y rating -->
-      <main class="centerContent">
-        <h1 class="brandTitle" id="brandTitle">INVICTUS</h1>
+      <!-- Center brand -->
+      <section class="centerContent">
+        <h1 class="brandTitle" id="brandTitle">INVICTUS STREAMING</h1>
 
         <button class="ratingLine" id="btnOpenRatings" type="button">
           <span class="ratingValue" id="ratingValue">4.8</span>
           <span class="star">★</span>
           <span class="ratingCount" id="ratingCount">(0)</span>
         </button>
-      </main>
-
-      <!-- Tarjetas inferiores -->
-      <section class="cards">
-        <!-- Card 1: plataformas -->
-        <div class="glassCard">
-          <div class="cardTitle" id="platformsTitle">Vuelve a entrar</div>
-          <div class="hScroll" id="platformsRow">
-            <!-- items dinámicos -->
-          </div>
-        </div>
-
-        <!-- Card 2: capturas -->
-        <div class="glassCard">
-          <div class="cardTitle" id="screensTitle">Para ti</div>
-          <div class="screensRow" id="screensRow">
-            <!-- carrusel dinámico -->
-          </div>
-        </div>
-
-        <!-- Reseñas (lista aprobadas) -->
-        <div class="glassCard reviewsCard">
-          <div class="cardTitle">Reseñas</div>
-          <div id="reviewsList" class="reviewsList"></div>
-        </div>
       </section>
 
-      <!-- Bottom Nav -->
-      <nav class="bottomNav">
-        <button class="navBtn active" data-tab="home" aria-label="Inicio">
-          <svg viewBox="0 0 24 24" class="navIcon">
-            <path d="M4 10.5l8-7 8 7V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/>
-          </svg>
-        </button>
+      <!-- Cards -->
+      <section class="cards">
+        <article class="glassCard">
+          <div class="cardTitle" id="platformsTitle">Vuelve a entrar</div>
+          <div class="hScroll" id="platformsRow"></div>
+        </article>
 
-        <button class="navBtn" data-tab="search" aria-label="Buscar">
-          <svg viewBox="0 0 24 24" class="navIcon">
-            <path d="M10.5 3a7.5 7.5 0 105.2 12.9l3.4 3.4 1.4-1.4-3.4-3.4A7.5 7.5 0 0010.5 3z"/>
-            <path d="M10.5 5a5.5 5.5 0 110 11 5.5 5.5 0 010-11z"/>
-          </svg>
-        </button>
+        <article class="glassCard">
+          <div class="cardTitle" id="screensTitle">Para ti</div>
+          <div class="screensRow" id="screensRow"></div>
+        </article>
 
-        <button class="navBtn" data-tab="platforms" aria-label="Plataformas">
-          <svg viewBox="0 0 24 24" class="navIcon">
-            <path d="M6 7h12M6 12h12M6 17h12"/>
-          </svg>
-        </button>
+        <article class="glassCard reviewsCard">
+          <div class="cardTitle">
+            <span>Reseñas</span>
+          </div>
+          <div class="reviewsList" id="reviewsList"></div>
+        </article>
+      </section>
+    </main>
 
-        <button class="navBtn" data-tab="gallery" aria-label="Capturas">
-          <svg viewBox="0 0 24 24" class="navIcon">
-            <path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/>
-            <path d="M8 14l2-2 3 3 3-4 2 3"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
+    <!-- Bottom nav -->
+    <nav class="bottomNav" aria-label="Navegación">
+      <button class="navBtn active" data-tab="home" aria-label="Inicio">
+        <svg class="navIcon" viewBox="0 0 24 24">
+          <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z" />
+        </svg>
+      </button>
 
-    <!-- Drawer (sidebar) -->
+      <button class="navBtn" data-tab="search" aria-label="Buscar">
+        <svg class="navIcon" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+      </button>
+
+      <button class="navBtn" data-tab="bag" aria-label="Carrito">
+        <svg class="navIcon" viewBox="0 0 24 24">
+          <path d="M6 7h12l-1 14H7L6 7z"></path>
+          <path d="M9 7a3 3 0 0 1 6 0"></path>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Drawer -->
     <aside class="drawer" id="drawer" aria-hidden="true">
-      <div class="drawer__panel">
+      <div class="drawer__backdrop" id="drawerBackdrop"></div>
+      <div class="drawer__panel" role="dialog" aria-label="Menú lateral">
         <div class="drawer__header">
           <div class="drawer__title">Menú</div>
-          <button class="iconBtn drawer__close" id="btnCloseDrawer" aria-label="Cerrar">
-            ✕
+          <button class="iconBtn glassBtn" id="btnCloseDrawer" aria-label="Cerrar">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
           </button>
         </div>
 
-        <div class="drawer__items">
-          <button class="drawerItem" data-tab="home">Inicio</button>
-          <button class="drawerItem" data-tab="search">Buscar</button>
-          <button class="drawerItem" data-tab="platforms">Plataformas</button>
-          <button class="drawerItem" data-tab="gallery">Capturas</button>
-        </div>
+        <button class="drawerItem" data-tab="home">Inicio</button>
+        <button class="drawerItem" data-tab="search">Buscar</button>
+        <button class="drawerItem" data-tab="bag">Carrito</button>
       </div>
-      <div class="drawer__backdrop" id="drawerBackdrop"></div>
     </aside>
 
-    <!-- Bottom Sheet: Ratings -->
-    <div class="sheet" id="ratingsSheet" aria-hidden="true">
-      <div class="sheet__panel">
+    <!-- Ratings Sheet -->
+    <section class="sheet" id="ratingsSheet" aria-hidden="true">
+      <div class="sheet__backdrop" id="ratingsBackdrop"></div>
+      <div class="sheet__panel" role="dialog" aria-label="Calificaciones">
         <div class="sheet__handle"></div>
 
         <div class="sheet__header">
           <div class="sheet__title">Calificaciones</div>
-          <button class="iconBtn" id="btnCloseRatings" aria-label="Cerrar">✕</button>
+          <button class="iconBtn glassBtn" id="btnCloseRatings" aria-label="Cerrar">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
         <div class="sheet__summary">
-          <div class="sheet__big">
-            <span id="sheetRatingValue">4.8</span> <span class="star">★</span>
+          <div>
+            <div class="sheet__big" id="sheetRatingValue">4.8</div>
+            <div class="sheet__small" id="sheetRatingCount">0 reseñas</div>
           </div>
-          <div class="sheet__small" id="sheetRatingCount">0 reseñas</div>
+          <div class="sheet__actions">
+            <button class="primaryBtn" id="btnOpenReviewForm">Publicar reseña</button>
+            <div class="sheet__hint">Puedes deslizar para ver más.</div>
+          </div>
         </div>
 
-        <div class="breakdown" id="breakdown">
-          <!-- 5 a 1 -->
-        </div>
+        <div class="breakdown" id="breakdown"></div>
 
-        <div class="sheet__actions">
-          <button class="primaryBtn" id="btnOpenReviewForm">Publicar reseña</button>
-        </div>
-
-        <div class="sheet__hint">
-          Puedes deslizar esta ventana. (Scroll dentro si hay mucho contenido)
+        <!-- ✅ NUEVO: lista de reseñas dentro del modal (deslizable) -->
+        <div class="sheetReviewsWrap" id="sheetReviewsWrap">
+          <div class="sheetReviewsHeader">
+            <div class="sheetReviewsTitle">Reseñas</div>
+            <div class="sheetReviewsCount" id="sheetReviewsCount">0</div>
+          </div>
+          <div class="sheetReviewsList" id="sheetReviewsList"></div>
         </div>
       </div>
-      <div class="sheet__backdrop" id="ratingsBackdrop"></div>
-    </div>
+    </section>
 
-    <!-- Bottom Sheet: Formulario Reseña -->
-    <div class="sheet" id="reviewSheet" aria-hidden="true">
-      <div class="sheet__panel">
+    <!-- Review Form Sheet -->
+    <section class="sheet" id="reviewSheet" aria-hidden="true">
+      <div class="sheet__backdrop" id="reviewBackdrop"></div>
+      <div class="sheet__panel" role="dialog" aria-label="Publicar reseña">
         <div class="sheet__handle"></div>
 
         <div class="sheet__header">
           <div class="sheet__title">Publicar reseña</div>
-          <button class="iconBtn" id="btnCloseReview" aria-label="Cerrar">✕</button>
+          <button class="iconBtn glassBtn" id="btnCloseReview" aria-label="Cerrar">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
-        <form id="reviewForm" class="form">
+        <form class="form" id="reviewForm">
           <label class="field">
-            <span>Nombre de usuario</span>
-            <input id="fUsername" type="text" maxlength="24" required placeholder="Ej. Angel" />
+            <span>Nombre</span>
+            <input id="fUsername" maxlength="24" required placeholder="Ej. Angel" />
           </label>
 
           <label class="field">
@@ -196,33 +200,42 @@
           </label>
 
           <label class="field">
-            <span>Reseña</span>
-            <textarea id="fText" rows="4" maxlength="350" required placeholder="Escribe tu reseña..."></textarea>
-            <div class="charCount"><span id="charNow">0</span>/350</div>
+            <span>Servicio comprado</span>
+            <input
+              id="fService"
+              type="text"
+              maxlength="40"
+              required
+              placeholder="Ej. Netflix Premium / Disney+ / Spotify"
+            />
           </label>
 
-          <button class="primaryBtn" type="submit" id="btnSubmitReview">
+          <label class="field">
+            <span>Reseña</span>
+            <textarea id="fText" rows="4" maxlength="240" required placeholder="Cuenta tu experiencia..."></textarea>
+            <div class="charCount"><span id="charNow">0</span>/240</div>
+          </label>
+
+          <button class="primaryBtn" id="btnSubmitReview" type="submit">
             Enviar (queda pendiente de aprobación)
           </button>
 
           <div class="formNote">
-            Tu reseña se mostrará cuando sea aprobada.
+            Tu reseña se publicará cuando sea aprobada ✅
           </div>
         </form>
       </div>
-      <div class="sheet__backdrop" id="reviewBackdrop"></div>
-    </div>
+    </section>
 
-    <!-- Lightbox para capturas -->
-    <div class="lightbox" id="lightbox" aria-hidden="true">
+    <!-- Lightbox -->
+    <section class="lightbox" id="lightbox" aria-hidden="true">
+      <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
       <button class="lightbox__close" id="btnCloseLightbox" aria-label="Cerrar">✕</button>
       <button class="lightbox__nav left" id="btnPrevImg" aria-label="Anterior">‹</button>
-      <img id="lightboxImg" alt="Captura" />
       <button class="lightbox__nav right" id="btnNextImg" aria-label="Siguiente">›</button>
-      <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
-    </div>
+      <img id="lightboxImg" alt="Imagen" />
+    </section>
 
-    <script type="module" src="./firebase.js"></script>
     <script type="module" src="./app.js"></script>
   </body>
 </html>
