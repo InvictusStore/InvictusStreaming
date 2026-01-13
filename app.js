@@ -65,7 +65,6 @@ function setActiveTab(tab) {
     b.classList.toggle("active", b.dataset.tab === tab);
   });
 
-  // scroll a secciones (simple MVP)
   if (tab === "home") window.scrollTo({ top: 0, behavior: "smooth" });
   if (tab === "platforms") $("platformsTitle").scrollIntoView({ behavior: "smooth", block: "start" });
   if (tab === "gallery") $("screensTitle").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -79,7 +78,6 @@ async function loadSettings() {
   const ref = doc(db, "settings", "public");
   const snap = await getDoc(ref);
   if (!snap.exists()) {
-    // fallback básico
     state.settings = {
       title: "Invictus Streaming",
       heroImageUrl: "",
@@ -125,7 +123,6 @@ async function loadApprovedReviews() {
   state.reviews = snaps.docs.map((d) => ({ id: d.id, ...d.data() }));
   state.approvedCount = state.reviews.length;
 
-  // breakdown 5..1
   state.breakdown = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   for (const r of state.reviews) {
     const val = Number(r.rating) || 0;
@@ -139,14 +136,12 @@ async function loadApprovedReviews() {
 function renderHero() {
   const s = state.settings;
 
-  // Fondo
   if (s.heroImageUrl) {
     $("heroBg").style.backgroundImage = `url("${s.heroImageUrl}")`;
   } else {
     $("heroBg").style.backgroundImage = `linear-gradient(120deg, #1a0b24, #0b0b0f)`;
   }
 
-  // Títulos
   const title = (s.title || "Invictus Streaming").toUpperCase();
   $("brandTitle").textContent = title;
 
@@ -268,7 +263,6 @@ function renderReviews() {
     list.appendChild(card);
   });
 
-  // listeners likes
   list.querySelectorAll(".likeBtn").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const reviewId = btn.getAttribute("data-review");
@@ -297,15 +291,12 @@ async function toggleLike(reviewId, btnEl) {
   const reviewRef = doc(db, "reviews", reviewId);
   const likeRef = doc(db, "reviews", reviewId, "likes", anonId);
 
-  // UI optimista
   const countSpan = btnEl.querySelector("span");
   let current = Number(countSpan?.textContent || 0);
 
   try {
     if (!likedNow) {
-      // create like doc
       await setDoc(likeRef, { createdAt: serverTimestamp() });
-      // increment likesCount
       await updateDoc(reviewRef, { likesCount: increment(1) });
 
       setLikedLocally(reviewId, true);
@@ -348,6 +339,7 @@ async function submitReview(e) {
 
   try {
     $("btnSubmitReview").disabled = true;
+
     await addDoc(collection(db, "reviews"), payload);
 
     $("reviewForm").reset();
@@ -357,7 +349,7 @@ async function submitReview(e) {
     alert("¡Listo! Tu reseña fue enviada y quedará pendiente de aprobación.");
   } catch (err) {
     console.error(err);
-    alert("No se pudo enviar la reseña. Intenta de nuevo.");
+    alert("No se pudo enviar la reseña. Revisa tus reglas de Firestore y vuelve a intentar.");
   } finally {
     $("btnSubmitReview").disabled = false;
   }
@@ -377,9 +369,7 @@ async function sharePage() {
       await navigator.clipboard.writeText(url);
       alert("Link copiado al portapapeles ✅");
     }
-  } catch (e) {
-    // Si cancela compartir, no hacemos nada
-  }
+  } catch (e) {}
 }
 
 /** =========================
@@ -430,7 +420,9 @@ function wireUI() {
   // Drawer
   $("btnMenu").addEventListener("click", openDrawer);
   $("btnCloseDrawer").addEventListener("click", closeDrawer);
-  $("drawerBackdrop").addEventListener("click", closeDrawer);
+
+  // ✅ Ya NO cerramos tocando “afuera” porque quitamos el backdrop
+  // $("drawerBackdrop").addEventListener("click", closeDrawer);
 
   document.querySelectorAll(".drawerItem").forEach((b) => {
     b.addEventListener("click", () => {
@@ -443,11 +435,11 @@ function wireUI() {
   $("btnShare").addEventListener("click", sharePage);
 
   // Ratings sheet
-  $("btnOpenRatings").addEventListener("click", () => {
-    openSheet("ratingsSheet");
-  });
+  $("btnOpenRatings").addEventListener("click", () => openSheet("ratingsSheet"));
   $("btnCloseRatings").addEventListener("click", () => closeSheet("ratingsSheet"));
-  $("ratingsBackdrop").addEventListener("click", () => closeSheet("ratingsSheet"));
+
+  // ✅ Ya NO cerramos tocando “afuera”
+  // $("ratingsBackdrop").addEventListener("click", () => closeSheet("ratingsSheet"));
 
   // Open review form
   $("btnOpenReviewForm").addEventListener("click", () => {
@@ -457,7 +449,9 @@ function wireUI() {
 
   // Review sheet close
   $("btnCloseReview").addEventListener("click", () => closeSheet("reviewSheet"));
-  $("reviewBackdrop").addEventListener("click", () => closeSheet("reviewSheet"));
+
+  // ✅ Ya NO cerramos tocando “afuera”
+  // $("reviewBackdrop").addEventListener("click", () => closeSheet("reviewSheet"));
 
   // Form submit + contador caracteres
   $("reviewForm").addEventListener("submit", submitReview);
@@ -478,7 +472,6 @@ function wireUI() {
 
   // “Iniciar sesión” sin funcionalidad
   $("btnLogin").addEventListener("click", () => alert("Próximamente 😉"));
-  // Search sin funcionalidad por ahora
   $("btnSearch").addEventListener("click", () => alert("Búsqueda próximamente 😉"));
 }
 
