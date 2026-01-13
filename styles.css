@@ -305,9 +305,12 @@ body{ background:#0b0b0f; color:var(--text); }
   display:none;
 }
 .drawer.open{ display:block; }
+
+/* ✅ FIX: backdrop debajo del panel */
 .drawer__backdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.45);
+  z-index: 1;
 }
 .drawer__panel{
   position:absolute;
@@ -320,7 +323,9 @@ body{ background:#0b0b0f; color:var(--text); }
   border-right: 1px solid rgba(255,255,255,.10);
   box-shadow: var(--shadow);
   padding: 16px;
+  z-index: 2;
 }
+
 .drawer__header{
   display:flex; align-items:center; justify-content:space-between;
   margin-bottom: 16px;
@@ -347,10 +352,13 @@ body{ background:#0b0b0f; color:var(--text); }
   display:none;
 }
 .sheet.open{ display:block; }
+
+/* ✅ FIX: backdrop debajo del panel */
 .sheet__backdrop{
   position:absolute;
   inset:0;
   background: rgba(0,0,0,.45);
+  z-index: 1;
 }
 .sheet__panel{
   position:absolute;
@@ -367,7 +375,9 @@ body{ background:#0b0b0f; color:var(--text); }
   backdrop-filter: blur(14px);
   padding: 10px 16px 16px;
   overflow:auto;
+  z-index: 2;
 }
+
 .sheet__handle{
   width: 52px;
   height: 5px;
@@ -483,10 +493,14 @@ body{ background:#0b0b0f; color:var(--text); }
   display:none;
 }
 .lightbox.open{ display:block; }
+
+/* ✅ FIX recomendado: backdrop debajo de imagen/botones */
 .lightbox__backdrop{
   position:absolute; inset:0;
   background: rgba(0,0,0,.70);
+  z-index: 1;
 }
+
 .lightbox img{
   position:absolute;
   inset:0;
