@@ -135,35 +135,62 @@ body {
 /* Oculto */
 .floatingSearch { display: none !important; }
 
-.centerContent{
-  /* conserva lo que ya tienes */
+.centerContent {
+  position: relative;
+  z-index: 4;
+  text-align: center;
+
+  /* ✅ Mantienes tu “altura” (estos se quedan igual) */
   padding-top: 60px;
   padding-bottom: 35px;
 
-  /* nuevo: define una "caja" alta para centrar dentro */
+  /* ✅ Nuevo: centra en altura dentro del área superior (50vh) */
   height: calc(50vh - 60px - 35px);
   min-height: 180px;
 
-  /* centra vertical y horizontal */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  /* separaciones controladas */
+  /* ✅ Controla el espacio entre título y rating */
   gap: 10px;
 }
 
-.brandTitle{
-  margin: 0 !important;
+.brandTitle {
+  /* ✅ Antes: margin: 25px 0 10px; (esto rompía el centrado) */
+  margin: 0;
+
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  text-shadow: none;
+  color: rgba(0, 0, 0, .92);
+
+  /* opcional: ayuda a que se vea más centrado visualmente */
   line-height: 1.05;
 }
 
-/* Igual: sin margen extra, solo alineación */
-.ratingLine{
-  margin: 0 !important;
+/* ✅ Rating negro */
+.ratingLine {
+  /* ✅ evita que meta espacios raros */
+  margin: 0;
+
+  border: none;
+  background: transparent;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  text-shadow: none;
+
+  /* opcional */
   line-height: 1;
 }
+
 
 .ratingValue { font-size: 18px; }
 .star { font-size: 18px; color: #f5b301; }
