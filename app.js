@@ -40,20 +40,28 @@ function escapeHtml(str) {
 }
 
 function openDrawer() {
-  $("drawer").classList.add("open");
-  $("drawer").setAttribute("aria-hidden", "false");
+  const el = $("drawer");
+  if (!el) return;
+  el.classList.add("open");
+  el.setAttribute("aria-hidden", "false");
 }
 function closeDrawer() {
-  $("drawer").classList.remove("open");
-  $("drawer").setAttribute("aria-hidden", "true");
+  const el = $("drawer");
+  if (!el) return;
+  el.classList.remove("open");
+  el.setAttribute("aria-hidden", "true");
 }
 function openSheet(sheetId) {
-  $(sheetId).classList.add("open");
-  $(sheetId).setAttribute("aria-hidden", "false");
+  const el = $(sheetId);
+  if (!el) return;
+  el.classList.add("open");
+  el.setAttribute("aria-hidden", "false");
 }
 function closeSheet(sheetId) {
-  $(sheetId).classList.remove("open");
-  $(sheetId).setAttribute("aria-hidden", "true");
+  const el = $(sheetId);
+  if (!el) return;
+  el.classList.remove("open");
+  el.setAttribute("aria-hidden", "true");
 }
 
 function setActiveTab(tab) {
@@ -118,9 +126,7 @@ async function toggleLike(reviewId) {
       await updateDoc(ref, { likesCount: increment(1) });
       setLikedLocally(reviewId, true);
     } else {
-      // opcional: permitir “deslike” (si quieres, lo deshabilitamos)
-      // await updateDoc(ref, { likesCount: increment(-1) });
-      // setLikedLocally(reviewId, false);
+      // Si NO quieres deslike, lo dejamos bloqueado así:
       return;
     }
 
@@ -183,33 +189,45 @@ function renderHero() {
   const s = state.settings;
 
   if (s.heroImageUrl) {
-    $("heroBg").style.backgroundImage = `url("${s.heroImageUrl}")`;
+    const heroBg = $("heroBg");
+    if (heroBg) heroBg.style.backgroundImage = `url("${s.heroImageUrl}")`;
   } else {
-    $("heroBg").style.backgroundImage = `linear-gradient(120deg, #1a0b24, #0b0b0f)`;
+    const heroBg = $("heroBg");
+    if (heroBg) heroBg.style.backgroundImage = `linear-gradient(120deg, #1a0b24, #0b0b0f)`;
   }
 
   const title = (s.title || "Invictus Streaming").toUpperCase();
-  $("brandTitle").textContent = title;
+  const brandTitle = $("brandTitle");
+  if (brandTitle) brandTitle.textContent = title;
 
-  $("platformsTitle").textContent = s.platformsTitle || "Vuelve a entrar";
-  $("screensTitle").textContent = s.screensTitle || "Para ti";
+  const platformsTitle = $("platformsTitle");
+  if (platformsTitle) platformsTitle.textContent = s.platformsTitle || "Vuelve a entrar";
+
+  const screensTitle = $("screensTitle");
+  if (screensTitle) screensTitle.textContent = s.screensTitle || "Para ti";
 }
 
 function renderRatingLine() {
   const s = state.settings;
   const ratingDisplay = typeof s.ratingDisplay === "number" ? s.ratingDisplay : 4.8;
 
-  $("ratingValue").textContent = ratingDisplay.toFixed(1);
-  $("ratingCount").textContent = `(${state.approvedCount})`;
+  const ratingValue = $("ratingValue");
+  const ratingCount = $("ratingCount");
+  const sheetRatingValue = $("sheetRatingValue");
+  const sheetRatingCount = $("sheetRatingCount");
 
-  $("sheetRatingValue").textContent = ratingDisplay.toFixed(1);
-  $("sheetRatingCount").textContent = `${state.approvedCount} reseñas`;
+  if (ratingValue) ratingValue.textContent = ratingDisplay.toFixed(1);
+  if (ratingCount) ratingCount.textContent = `(${state.approvedCount})`;
+
+  if (sheetRatingValue) sheetRatingValue.textContent = ratingDisplay.toFixed(1);
+  if (sheetRatingCount) sheetRatingCount.textContent = `${state.approvedCount} reseñas`;
 }
 
 function renderBreakdown() {
   const wrap = $("breakdown");
-  wrap.innerHTML = "";
+  if (!wrap) return;
 
+  wrap.innerHTML = "";
   const total = Math.max(1, state.approvedCount);
 
   for (let star = 5; star >= 1; star--) {
@@ -229,12 +247,14 @@ function renderBreakdown() {
 
 function renderPlatforms() {
   const row = $("platformsRow");
+  if (!row) return;
+
   row.innerHTML = "";
 
   state.platforms.forEach((p) => {
     const item = document.createElement("div");
     item.className = "platformItem";
-    item.innerHTML = `<img src="${p.logoUrl}" alt="${escapeHtml(p.name)}" loading="lazy">`;
+    item.innerHTML = `<img src="${escapeHtml(p.logoUrl)}" alt="${escapeHtml(p.name)}" loading="lazy">`;
     item.addEventListener("click", () => {
       const url = p.whatsappUrl || state.settings?.whatsappUrl;
       if (url) window.open(url, "_blank");
@@ -243,55 +263,67 @@ function renderPlatforms() {
   });
 }
 
+/** =========================
+ *  Lightbox (SIN flechas)
+ *  ========================= */
 function openLightbox(items, startIndex = 0) {
-  state.lightbox.items = items;
-  state.lightbox.index = startIndex;
-  $("lightboxImg").src = items[startIndex];
-  $("lightbox").classList.add("open");
-  $("lightbox").setAttribute("aria-hidden", "false");
-}
-function closeLightbox() {
-  $("lightbox").classList.remove("open");
-  $("lightbox").setAttribute("aria-hidden", "true");
-}
-function nextImg() {
-  const items = state.lightbox.items;
-  if (!items.length) return;
-  state.lightbox.index = (state.lightbox.index + 1) % items.length;
-  $("lightboxImg").src = items[state.lightbox.index];
-}
-function prevImg() {
-  const items = state.lightbox.items;
-  if (!items.length) return;
-  state.lightbox.index = (state.lightbox.index - 1 + items.length) % items.length;
-  $("lightboxImg").src = items[state.lightbox.index];
+  const clean = (items || []).filter(Boolean);
+  if (!clean.length) return;
+
+  state.lightbox.items = clean;
+  state.lightbox.index = Math.max(0, Math.min(clean.length - 1, Number(startIndex) || 0));
+
+  const img = $("lightboxImg");
+  const box = $("lightbox");
+  if (!img || !box) return;
+
+  img.src = clean[state.lightbox.index];
+  box.classList.add("open");
+  box.setAttribute("aria-hidden", "false");
 }
 
+function closeLightbox() {
+  const box = $("lightbox");
+  if (!box) return;
+  box.classList.remove("open");
+  box.setAttribute("aria-hidden", "true");
+}
+
+/** =========================
+ *  Screens (capturas)
+ *  ========================= */
 function renderScreens() {
   const row = $("screensRow");
-  row.innerHTML = "";
+  if (!row) return;
 
-  const imgs = state.screens.map((s) => s.imageUrl);
+  row.innerHTML = "";
+  const imgs = state.screens.map((s) => s.imageUrl).filter(Boolean);
 
   state.screens.forEach((s, idx) => {
     const item = document.createElement("div");
     item.className = "screenItem";
-    item.innerHTML = `<img src="${s.imageUrl}" alt="captura" loading="lazy">`;
+    item.innerHTML = `<img src="${escapeHtml(s.imageUrl)}" alt="captura" loading="lazy">`;
     item.addEventListener("click", () => openLightbox(imgs, idx));
     row.appendChild(item);
   });
 }
 
+/** =========================
+ *  Reseñas (preview en home)
+ *  ========================= */
 function renderReviews() {
   const list = $("reviewsList");
+  if (!list) return;
+
   list.innerHTML = "";
 
   if (state.reviews.length === 0) {
-    list.innerHTML = `<div style="color:rgba(255,255,255,.65);font-weight:800;">Aún no hay reseñas aprobadas.</div>`;
+    // ✅ Texto neutro (no blanco) para que se vea en tema claro
+    list.innerHTML = `<div style="color:rgba(0,0,0,.55);font-weight:800;">Aún no hay reseñas aprobadas.</div>`;
     return;
   }
 
-  const avatar = state.settings?.defaultAvatarUrl || "";
+  const avatarDefault = state.settings?.defaultAvatarUrl || "";
   const preview = state.reviews.slice(0, 4);
 
   preview.forEach((r) => {
@@ -300,11 +332,22 @@ function renderReviews() {
 
     const liked = isLikedLocally(r.id);
     const day = dayLabel(r.createdAt);
+
     const service = r.service || "Invictus Streaming";
+
+    // ✅ Si algún día guardas imagen real en la reseña, la abrimos:
+    // (si no existe, usa avatar default)
+    const imgToShow =
+      r.imageUrl ||
+      r.photoUrl ||
+      r.avatarUrl ||
+      r.avatar ||
+      avatarDefault ||
+      "";
 
     item.innerHTML = `
       <div class="reviewAvatar">
-        <img src="${avatar}" alt="avatar" loading="lazy" />
+        <img src="${escapeHtml(imgToShow)}" alt="imagen reseña" loading="lazy" />
       </div>
       <div class="reviewContent">
         <div class="reviewStarsRow">${starsText(r.rating)}</div>
@@ -319,7 +362,7 @@ function renderReviews() {
         <div class="reviewText2">${escapeHtml(r.text || "")}</div>
 
         <div class="helpfulRow">
-          <button class="helpfulBtn ${liked ? "liked" : ""}" data-review="${r.id}">
+          <button class="helpfulBtn ${liked ? "liked" : ""}" data-review="${escapeHtml(r.id)}">
             <span class="heart">❤</span> Útil <span>${Number(r.likesCount || 0)}</span>
           </button>
         </div>
@@ -328,7 +371,16 @@ function renderReviews() {
     list.appendChild(item);
   });
 
+  // ✅ Delegación de eventos:
+  // 1) click en imagen => lightbox
+  // 2) click en like => like
   list.onclick = async (e) => {
+    const img = e.target.closest(".reviewAvatar img");
+    if (img) {
+      openLightbox([img.src], 0);
+      return;
+    }
+
     const btn = e.target.closest("[data-review]");
     if (!btn) return;
     const id = btn.getAttribute("data-review");
@@ -336,6 +388,9 @@ function renderReviews() {
   };
 }
 
+/** =========================
+ *  Reseñas (lista dentro del sheet)
+ *  ========================= */
 function renderSheetReviews() {
   const list = $("sheetReviewsList");
   const countEl = $("sheetReviewsCount");
@@ -349,7 +404,7 @@ function renderSheetReviews() {
     return;
   }
 
-  const avatar = state.settings?.defaultAvatarUrl || "";
+  const avatarDefault = state.settings?.defaultAvatarUrl || "";
 
   state.reviews.forEach((r) => {
     const item = document.createElement("div");
@@ -359,9 +414,17 @@ function renderSheetReviews() {
     const day = dayLabel(r.createdAt);
     const service = r.service || "Invictus Streaming";
 
+    const imgToShow =
+      r.imageUrl ||
+      r.photoUrl ||
+      r.avatarUrl ||
+      r.avatar ||
+      avatarDefault ||
+      "";
+
     item.innerHTML = `
       <div class="reviewAvatar">
-        <img src="${avatar}" alt="avatar" loading="lazy" />
+        <img src="${escapeHtml(imgToShow)}" alt="imagen reseña" loading="lazy" />
       </div>
       <div class="reviewContent">
         <div class="reviewStarsRow">${starsText(r.rating)}</div>
@@ -376,7 +439,7 @@ function renderSheetReviews() {
         <div class="reviewText2">${escapeHtml(r.text || "")}</div>
 
         <div class="helpfulRow">
-          <button class="helpfulBtn ${liked ? "liked" : ""}" data-review="${r.id}">
+          <button class="helpfulBtn ${liked ? "liked" : ""}" data-review="${escapeHtml(r.id)}">
             <span class="heart">❤</span> Útil <span>${Number(r.likesCount || 0)}</span>
           </button>
         </div>
@@ -386,6 +449,12 @@ function renderSheetReviews() {
   });
 
   list.onclick = async (e) => {
+    const img = e.target.closest(".reviewAvatar img");
+    if (img) {
+      openLightbox([img.src], 0);
+      return;
+    }
+
     const btn = e.target.closest("[data-review]");
     if (!btn) return;
     const id = btn.getAttribute("data-review");
@@ -399,10 +468,10 @@ function renderSheetReviews() {
 async function submitReview(e) {
   e.preventDefault();
 
-  const username = $("fUsername").value.trim();
-  const rating = Number($("fRating").value);
-  const service = $("fService").value.trim();
-  const text = $("fText").value.trim();
+  const username = $("fUsername")?.value.trim();
+  const rating = Number($("fRating")?.value);
+  const service = $("fService")?.value.trim();
+  const text = $("fText")?.value.trim();
 
   if (!username || !service || !text || !(rating >= 1 && rating <= 5)) return;
 
@@ -417,16 +486,19 @@ async function submitReview(e) {
   };
 
   try {
-    $("btnSubmitReview").disabled = true;
-    $("btnSubmitReview").textContent = "Enviando...";
+    const btn = $("btnSubmitReview");
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = "Enviando...";
+    }
 
     await addDoc(collection(db, "reviews"), payload);
 
-    $("fUsername").value = "";
-    $("fService").value = "";
-    $("fRating").value = "5";
-    $("fText").value = "";
-    $("charNow").textContent = "0";
+    if ($("fUsername")) $("fUsername").value = "";
+    if ($("fService")) $("fService").value = "";
+    if ($("fRating")) $("fRating").value = "5";
+    if ($("fText")) $("fText").value = "";
+    if ($("charNow")) $("charNow").textContent = "0";
 
     alert("¡Gracias! Tu reseña quedó pendiente de aprobación ✅");
     closeSheet("reviewSheet");
@@ -435,8 +507,11 @@ async function submitReview(e) {
     console.error(err);
     alert("No se pudo publicar. Revisa tus reglas de Firestore y la consola.");
   } finally {
-    $("btnSubmitReview").disabled = false;
-    $("btnSubmitReview").textContent = "Enviar (queda pendiente de aprobación)";
+    const btn = $("btnSubmitReview");
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Enviar (queda pendiente de aprobación)";
+    }
   }
 }
 
@@ -464,9 +539,9 @@ async function sharePage() {
  *  ========================= */
 function wireUI() {
   // Drawer
-  $("btnMenu").addEventListener("click", openDrawer);
-  $("btnCloseDrawer").addEventListener("click", closeDrawer);
-  $("drawerBackdrop").addEventListener("click", closeDrawer);
+  $("btnMenu")?.addEventListener("click", openDrawer);
+  $("btnCloseDrawer")?.addEventListener("click", closeDrawer);
+  $("drawerBackdrop")?.addEventListener("click", closeDrawer);
 
   document.querySelectorAll(".drawerItem").forEach((b) => {
     b.addEventListener("click", () => {
@@ -476,26 +551,28 @@ function wireUI() {
   });
 
   // Share
-  $("btnShare").addEventListener("click", sharePage);
+  $("btnShare")?.addEventListener("click", sharePage);
 
   // Ratings sheet
-  $("btnOpenRatings").addEventListener("click", () => openSheet("ratingsSheet"));
-  $("btnCloseRatings").addEventListener("click", () => closeSheet("ratingsSheet"));
+  $("btnOpenRatings")?.addEventListener("click", () => openSheet("ratingsSheet"));
+  $("btnCloseRatings")?.addEventListener("click", () => closeSheet("ratingsSheet"));
   // ✅ Sin overlay: NO cerramos al tocar fuera
 
   // Open review form
-  $("btnOpenReviewForm").addEventListener("click", () => {
+  $("btnOpenReviewForm")?.addEventListener("click", () => {
     closeSheet("ratingsSheet");
     openSheet("reviewSheet");
   });
 
-  $("btnCloseReview").addEventListener("click", () => closeSheet("reviewSheet"));
+  $("btnCloseReview")?.addEventListener("click", () => closeSheet("reviewSheet"));
   // ✅ Sin overlay: NO cerramos al tocar fuera
 
   // Form
-  $("reviewForm").addEventListener("submit", submitReview);
-  $("fText").addEventListener("input", () => {
-    $("charNow").textContent = String($("fText").value.length);
+  $("reviewForm")?.addEventListener("submit", submitReview);
+  $("fText")?.addEventListener("input", () => {
+    const el = $("charNow");
+    const t = $("fText");
+    if (el && t) el.textContent = String(t.value.length);
   });
 
   // Bottom nav
@@ -503,17 +580,19 @@ function wireUI() {
     b.addEventListener("click", () => setActiveTab(b.dataset.tab));
   });
 
-  // Lightbox
-  $("btnCloseLightbox").addEventListener("click", closeLightbox);
-  $("lightboxBackdrop").addEventListener("click", closeLightbox);
-  $("btnNextImg").addEventListener("click", nextImg);
-  $("btnPrevImg").addEventListener("click", prevImg);
+  // Lightbox (SIN flechas)
+  $("btnCloseLightbox")?.addEventListener("click", closeLightbox);
+  $("lightboxBackdrop")?.addEventListener("click", closeLightbox);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLightbox();
+  });
 
   // “Iniciar sesión” sin funcionalidad
-  $("btnLogin").addEventListener("click", () => alert("Próximamente 😉"));
+  $("btnLogin")?.addEventListener("click", () => alert("Próximamente 😉"));
 
   // Search sin funcionalidad por ahora
-  $("btnSearch").addEventListener("click", () => alert("Búsqueda próximamente 😉"));
+  $("btnSearch")?.addEventListener("click", () => alert("Búsqueda próximamente 😉"));
 }
 
 async function start() {
