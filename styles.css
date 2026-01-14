@@ -16,7 +16,7 @@
   --reviewBorder: rgba(0, 0, 0, .10);
   --reviewText: rgba(0, 0, 0, .92);
   --reviewMuted: rgba(0, 0, 0, .55);
-  --reviewStar: #f1f501;
+  --reviewStar: #f5e501;
   --reviewDivider: rgba(0, 0, 0, .10);
   --reviewAction: rgba(0, 0, 0, .60);
 }
@@ -202,7 +202,7 @@ body {
 }
 
 .ratingValue { font-size: 18px; }
-.star { font-size: 18px; color: #f1f501; }
+.star { font-size: 18px; color: #f5e501; }
 .ratingCount { color: var(--muted); font-weight: 700; }
 
 /* ✅ NUEVO: botón “Ver más reseñas” (debajo del rating) */
@@ -507,7 +507,7 @@ body {
 }
 
 /* ✅ Estrella amarilla (si aparece en algún texto del sheet) */
-#ratingsSheet .star{ color:#f1f501 !important; }
+#ratingsSheet .star{ color:#f5e501 !important; }
 
 .breakdown {
   display: flex;
