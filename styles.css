@@ -59,18 +59,7 @@ body{
 
 /* ✅ Overlay SOLO arriba (mitad de pantalla) */
 .hero__overlay{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height: 50vh;
-
-  /* ✅ solo oscurecer, sin blur */
-  background: rgba(18, 18, 24, .55);
-
-  /* ✅ FIX: quitar blur real */
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  display: none !important;
 }
 
 
