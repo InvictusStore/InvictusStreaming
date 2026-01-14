@@ -121,12 +121,11 @@ async function toggleLike(reviewId) {
     const liked = isLikedLocally(reviewId);
     const ref = doc(db, "reviews", reviewId);
 
-    // Solo sumamos (sin auth no podemos evitar 100% abuso, pero reducimos con localStorage)
     if (!liked) {
       await updateDoc(ref, { likesCount: increment(1) });
       setLikedLocally(reviewId, true);
     } else {
-      // Si NO quieres deslike, lo dejamos bloqueado así:
+      // Sin “deslike”
       return;
     }
 
@@ -188,12 +187,10 @@ async function loadApprovedReviews() {
 function renderHero() {
   const s = state.settings;
 
-  if (s.heroImageUrl) {
-    const heroBg = $("heroBg");
-    if (heroBg) heroBg.style.backgroundImage = `url("${s.heroImageUrl}")`;
-  } else {
-    const heroBg = $("heroBg");
-    if (heroBg) heroBg.style.backgroundImage = `linear-gradient(120deg, #1a0b24, #0b0b0f)`;
+  const heroBg = $("heroBg");
+  if (heroBg) {
+    if (s.heroImageUrl) heroBg.style.backgroundImage = `url("${s.heroImageUrl}")`;
+    else heroBg.style.backgroundImage = `linear-gradient(120deg, #1a0b24, #0b0b0f)`;
   }
 
   const title = (s.title || "Invictus Streaming").toUpperCase();
@@ -264,8 +261,35 @@ function renderPlatforms() {
 }
 
 /** =========================
- *  Lightbox (SIN flechas)
+ *  Lightbox (SWIPE + SIN flechas)
  *  ========================= */
+function updateLightboxSrc() {
+  const items = state.lightbox.items || [];
+  if (!items.length) return;
+
+  const img = $("lightboxImg");
+  if (!img) return;
+
+  if (state.lightbox.index < 0) state.lightbox.index = 0;
+  if (state.lightbox.index > items.length - 1) state.lightbox.index = items.length - 1;
+
+  img.src = items[state.lightbox.index];
+}
+
+function nextImg() {
+  const items = state.lightbox.items || [];
+  if (items.length <= 1) return;
+  state.lightbox.index = (state.lightbox.index + 1) % items.length;
+  updateLightboxSrc();
+}
+
+function prevImg() {
+  const items = state.lightbox.items || [];
+  if (items.length <= 1) return;
+  state.lightbox.index = (state.lightbox.index - 1 + items.length) % items.length;
+  updateLightboxSrc();
+}
+
 function openLightbox(items, startIndex = 0) {
   const clean = (items || []).filter(Boolean);
   if (!clean.length) return;
@@ -273,11 +297,11 @@ function openLightbox(items, startIndex = 0) {
   state.lightbox.items = clean;
   state.lightbox.index = Math.max(0, Math.min(clean.length - 1, Number(startIndex) || 0));
 
-  const img = $("lightboxImg");
   const box = $("lightbox");
-  if (!img || !box) return;
+  const img = $("lightboxImg");
+  if (!box || !img) return;
 
-  img.src = clean[state.lightbox.index];
+  updateLightboxSrc();
   box.classList.add("open");
   box.setAttribute("aria-hidden", "false");
 }
@@ -318,7 +342,6 @@ function renderReviews() {
   list.innerHTML = "";
 
   if (state.reviews.length === 0) {
-    // ✅ Texto neutro (no blanco) para que se vea en tema claro
     list.innerHTML = `<div style="color:rgba(0,0,0,.55);font-weight:800;">Aún no hay reseñas aprobadas.</div>`;
     return;
   }
@@ -335,8 +358,6 @@ function renderReviews() {
 
     const service = r.service || "Invictus Streaming";
 
-    // ✅ Si algún día guardas imagen real en la reseña, la abrimos:
-    // (si no existe, usa avatar default)
     const imgToShow =
       r.imageUrl ||
       r.photoUrl ||
@@ -371,9 +392,6 @@ function renderReviews() {
     list.appendChild(item);
   });
 
-  // ✅ Delegación de eventos:
-  // 1) click en imagen => lightbox
-  // 2) click en like => like
   list.onclick = async (e) => {
     const img = e.target.closest(".reviewAvatar img");
     if (img) {
@@ -556,7 +574,6 @@ function wireUI() {
   // Ratings sheet
   $("btnOpenRatings")?.addEventListener("click", () => openSheet("ratingsSheet"));
   $("btnCloseRatings")?.addEventListener("click", () => closeSheet("ratingsSheet"));
-  // ✅ Sin overlay: NO cerramos al tocar fuera
 
   // Open review form
   $("btnOpenReviewForm")?.addEventListener("click", () => {
@@ -565,7 +582,6 @@ function wireUI() {
   });
 
   $("btnCloseReview")?.addEventListener("click", () => closeSheet("reviewSheet"));
-  // ✅ Sin overlay: NO cerramos al tocar fuera
 
   // Form
   $("reviewForm")?.addEventListener("submit", submitReview);
@@ -580,12 +596,60 @@ function wireUI() {
     b.addEventListener("click", () => setActiveTab(b.dataset.tab));
   });
 
-  // Lightbox (SIN flechas)
+  // Lightbox
   $("btnCloseLightbox")?.addEventListener("click", closeLightbox);
   $("lightboxBackdrop")?.addEventListener("click", closeLightbox);
 
+  // ✅ Swipe (deslizar) para cambiar imágenes
+  const lbTarget = $("lightboxImg") || $("lightbox"); // si quieres: deslizar en toda el área
+  if (lbTarget) {
+    let startX = 0;
+    let startY = 0;
+    let active = false;
+
+    const THRESHOLD = 40;   // px mínimos para swipe
+    const V_RESTRAINT = 80; // si se mueve mucho vertical, ignorar
+
+    lbTarget.addEventListener(
+      "touchstart",
+      (e) => {
+        if (!e.touches || !e.touches[0]) return;
+        active = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    lbTarget.addEventListener(
+      "touchend",
+      (e) => {
+        if (!active) return;
+        active = false;
+
+        const t = (e.changedTouches && e.changedTouches[0]) || null;
+        if (!t) return;
+
+        const dx = t.clientX - startX;
+        const dy = t.clientY - startY;
+
+        if (Math.abs(dy) > V_RESTRAINT && Math.abs(dy) > Math.abs(dx)) return;
+
+        if (dx <= -THRESHOLD) nextImg();      // swipe izquierda => siguiente
+        else if (dx >= THRESHOLD) prevImg();  // swipe derecha => anterior
+      },
+      { passive: true }
+    );
+  }
+
+  // ✅ Teclado (opcional) cuando el visor está abierto
   document.addEventListener("keydown", (e) => {
+    const lb = $("lightbox");
+    if (!lb || !lb.classList.contains("open")) return;
+
     if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowRight") nextImg();
+    if (e.key === "ArrowLeft") prevImg();
   });
 
   // “Iniciar sesión” sin funcionalidad
