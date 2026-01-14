@@ -150,17 +150,18 @@ body {
 /* Oculto */
 .floatingSearch { display: none !important; }
 
+/* ✅ CAMBIO 1: Reducir a la mitad el espacio AppBar → Título */
 .centerContent {
   position: relative;
   z-index: 4;
   text-align: center;
 
-  /* ✅ Mantienes tu “altura” (estos se quedan igual) */
-  padding-top: 60px;
-  padding-bottom: 35px;
+  /* ⬇️ ANTES: 60 / 35 */
+  padding-top: 30px;
+  padding-bottom: 18px;
 
-  /* ✅ Nuevo: centra en altura dentro del área superior (50vh) */
-  height: calc(50vh - 60px - 35px);
+  /* ⬇️ Ajuste de la fórmula para que siga centrando igual */
+  height: calc(50vh - 30px - 18px);
   min-height: 180px;
 
   display: flex;
@@ -168,12 +169,10 @@ body {
   align-items: center;
   justify-content: center;
 
-  /* ✅ Controla el espacio entre título y rating */
   gap: 10px;
 }
 
 .brandTitle {
-  /* ✅ Antes: margin: 25px 0 10px; (esto rompía el centrado) */
   margin: 0;
 
   font-size: 52px;
@@ -183,13 +182,11 @@ body {
   text-shadow: none;
   color: rgba(0, 0, 0, .92);
 
-  /* opcional: ayuda a que se vea más centrado visualmente */
   line-height: 1.05;
 }
 
 /* ✅ Rating negro */
 .ratingLine {
-  /* ✅ evita que meta espacios raros */
   margin: 0;
 
   border: none;
@@ -201,8 +198,6 @@ body {
   font-weight: 700;
   cursor: pointer;
   text-shadow: none;
-
-  /* opcional */
   line-height: 1;
 }
 
@@ -210,10 +205,42 @@ body {
 .star { font-size: 18px; color: #f5b301; }
 .ratingCount { color: var(--muted); font-weight: 700; }
 
+/* ✅ NUEVO: botón “Ver más reseñas” (debajo del rating) */
+.moreReviewsBtn{
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 900;
+  color: rgba(0,0,0,.80);
+}
+
+.moreReviewsBtn:hover{
+  background: rgba(0,0,0,.05);
+}
+
+.moreReviewsBtn .moreIcon{
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: rgba(0,0,0,.70);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ✅ CAMBIO 2: Reducir a la mitad el espacio Rating → Primer card */
 .cards {
   position: relative;
   z-index: 4;
-  padding: 14px 16px 110px;
+
+  /* ⬇️ ANTES: 14px arriba, ahora 7px */
+  padding: 7px 16px 110px;
+
   display: flex;
   flex-direction: column;
   gap: 14px;

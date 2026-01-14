@@ -2,231 +2,235 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Invictus Streaming</title>
-    <link rel="stylesheet" href="./styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Invictus Streaming</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
-    <main class="hero" id="hero">
-        <div class="hero__bg" id="heroBg"></div>
+  <main class="hero" id="hero">
+    <div class="hero__bg" id="heroBg"></div>
 
-        <!-- Top bar -->
-        <header class="topbar">
-            <!-- ✅ IZQUIERDA: Compartir (antes era hamburguesa) -->
-            <button class="iconBtn glassBtn" id="btnShareTop" aria-label="Compartir">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="icon" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                </svg>
-            </button>
+    <!-- Top bar -->
+    <header class="topbar">
+      <!-- ✅ IZQUIERDA: Compartir (antes era hamburguesa) -->
+      <button class="iconBtn glassBtn" id="btnShareTop" aria-label="Compartir">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="icon" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+        </svg>
+      </button>
 
+      <button class="glassPill" id="btnLogin">Entregas Inmediatas</button>
 
-            <button class="glassPill" id="btnLogin">Entregas Inmediatas</button>
+      <!-- ✅ DERECHA: WhatsApp verde (antes era compartir) -->
+      <button class="iconBtn whatsBtn" id="btnWhatsAppTop" aria-label="WhatsApp">
+        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="waIcon" aria-hidden="true">
+          <title>WhatsApp</title>
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+        </svg>
+      </button>
+    </header>
 
-            <!-- ✅ DERECHA: WhatsApp verde (antes era compartir) -->
-            <button class="iconBtn whatsBtn" id="btnWhatsAppTop" aria-label="WhatsApp">
-                <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="waIcon"
-                    aria-hidden="true">
-                    <title>WhatsApp</title>
-                    <path
-                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-                </svg>
-            </button>
+    <!-- Floating search -->
+    <div class="floatingSearch">
+      <button class="iconBtn glassBtn" id="btnSearch" aria-label="Buscar">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M21 21l-4.35-4.35"></path>
+          <circle cx="11" cy="11" r="7"></circle>
+        </svg>
+      </button>
+    </div>
 
-        </header>
+    <!-- Center brand -->
+    <section class="centerContent">
+      <h1 class="brandTitle" id="brandTitle">INVICTUS STREAMING</h1>
 
-        <!-- Floating search -->
-        <div class="floatingSearch">
-            <button class="iconBtn glassBtn" id="btnSearch" aria-label="Buscar">
-                <svg class="icon" viewBox="0 0 24 24">
-                    <path d="M21 21l-4.35-4.35"></path>
-                    <circle cx="11" cy="11" r="7"></circle>
-                </svg>
-            </button>
-        </div>
+      <button class="ratingLine" id="btnOpenRatings" type="button">
+        <span class="ratingValue" id="ratingValue">4.8</span>
+        <span class="star">★★★★★</span>
+        <span class="ratingCount" id="ratingCount">(0)</span>
+      </button>
 
-        <!-- Center brand -->
-        <section class="centerContent">
-            <h1 class="brandTitle" id="brandTitle">INVICTUS STREAMING</h1>
-
-            <button class="ratingLine" id="btnOpenRatings" type="button">
-                <span class="ratingValue" id="ratingValue">4.8</span>
-                <span class="star">★★★★★</span>
-                <span class="ratingCount" id="ratingCount">(0)</span>
-            </button>
-        </section>
-
-        <!-- Cards -->
-        <section class="cards">
-            <article class="glassCard">
-                <div class="cardTitle" id="platformsTitle">Vuelve a entrar</div>
-                <div class="hScroll" id="platformsRow"></div>
-            </article>
-
-            <article class="glassCard">
-                <div class="cardTitle" id="screensTitle">Para ti</div>
-                <div class="screensRow" id="screensRow"></div>
-            </article>
-
-            <article class="glassCard reviewsCard">
-                <div class="cardTitle">
-                    <span>Reseñas</span>
-                </div>
-                <div class="reviewsList" id="reviewsList"></div>
-            </article>
-        </section>
-    </main>
-
-    <!-- Bottom nav -->
-    <nav class="bottomNav" aria-label="Navegación">
-        <button class="navBtn active" data-tab="home" aria-label="Inicio">
-            <svg class="navIcon" viewBox="0 0 24 24">
-                <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z" />
-            </svg>
-        </button>
-
-        <button class="navBtn" data-tab="search" aria-label="Buscar">
-            <svg class="navIcon" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="M21 21l-4.35-4.35"></path>
-            </svg>
-        </button>
-
-        <button class="navBtn" data-tab="bag" aria-label="Carrito">
-            <svg class="navIcon" viewBox="0 0 24 24">
-                <path d="M6 7h12l-1 14H7L6 7z"></path>
-                <path d="M9 7a3 3 0 0 1 6 0"></path>
-            </svg>
-        </button>
-    </nav>
-
-    <!-- Drawer -->
-    <aside class="drawer" id="drawer" aria-hidden="true">
-        <div class="drawer__backdrop" id="drawerBackdrop"></div>
-        <div class="drawer__panel" role="dialog" aria-label="Menú lateral">
-            <div class="drawer__header">
-                <div class="drawer__title">Menú</div>
-                <button class="iconBtn glassBtn" id="btnCloseDrawer" aria-label="Cerrar">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            <button class="drawerItem" data-tab="home">Inicio</button>
-            <button class="drawerItem" data-tab="search">Buscar</button>
-            <button class="drawerItem" data-tab="bag">Carrito</button>
-        </div>
-    </aside>
-
-    <!-- Ratings Sheet -->
-    <section class="sheet" id="ratingsSheet" aria-hidden="true">
-        <div class="sheet__backdrop" id="ratingsBackdrop"></div>
-        <div class="sheet__panel" role="dialog" aria-label="Calificaciones">
-            <div class="sheet__handle"></div>
-
-            <div class="sheet__header">
-                <div class="sheet__title">Calificaciones</div>
-                <button class="iconBtn glassBtn" id="btnCloseRatings" aria-label="Cerrar">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-
-            <div class="sheet__summary">
-                <div>
-                    <div class="sheet__big" id="sheetRatingValue">4.8</div>
-                    <div class="sheet__small" id="sheetRatingCount">0 reseñas</div>
-                </div>
-            </div>
-
-            <div class="breakdown" id="breakdown"></div>
-
-            <div class="sheet__actions sheet__actions--below">
-                <button class="primaryBtn" id="btnOpenReviewForm">
-                    Publicar reseña
-                </button>
-                <div class="sheet__hint">Puedes deslizar para ver más.</div>
-            </div>
-
-            <div class="sheetReviewsWrap" id="sheetReviewsWrap">
-                <div class="sheetReviewsHeader">
-                    <div class="sheetReviewsTitle">Reseñas</div>
-                    <div class="sheetReviewsCount" id="sheetReviewsCount">0</div>
-                </div>
-                <div class="sheetReviewsList" id="sheetReviewsList"></div>
-            </div>
-        </div>
+      <!-- ✅ NUEVO: Botón “Ver más reseñas” (abre el mismo modal) -->
+      <button class="moreReviewsBtn" id="btnMoreReviews" type="button" aria-label="Ver más reseñas">
+        <svg viewBox="0 0 24 24" class="moreIcon" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+        <span>Ver más reseñas</span>
+      </button>
     </section>
 
-    <!-- Review Form Sheet -->
-    <section class="sheet" id="reviewSheet" aria-hidden="true">
-        <div class="sheet__backdrop" id="reviewBackdrop"></div>
-        <div class="sheet__panel" role="dialog" aria-label="Publicar reseña">
-            <div class="sheet__handle"></div>
+    <!-- Cards -->
+    <section class="cards">
+      <article class="glassCard">
+        <div class="cardTitle" id="platformsTitle">Vuelve a entrar</div>
+        <div class="hScroll" id="platformsRow"></div>
+      </article>
 
-            <div class="sheet__header">
-                <div class="sheet__title">Publicar reseña</div>
-                <button class="iconBtn glassBtn" id="btnCloseReview" aria-label="Cerrar">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+      <article class="glassCard">
+        <div class="cardTitle" id="screensTitle">Para ti</div>
+        <div class="screensRow" id="screensRow"></div>
+      </article>
 
-            <form class="form" id="reviewForm">
-                <label class="field">
-                    <span>Nombre</span>
-                    <input id="fUsername" maxlength="24" required placeholder="Ej. Angel" />
-                </label>
-
-                <label class="field">
-                    <span>Calificación</span>
-                    <select id="fRating" required>
-                        <option value="5">5 ★★★★★</option>
-                        <option value="4">4 ★★★★</option>
-                        <option value="3">3 ★★★</option>
-                        <option value="2">2 ★★</option>
-                        <option value="1">1 ★</option>
-                    </select>
-                </label>
-
-                <label class="field">
-                    <span>Servicio comprado</span>
-                    <input id="fService" type="text" maxlength="40" required
-                        placeholder="Ej. Netflix Premium / Disney+ / Spotify" />
-                </label>
-
-                <label class="field">
-                    <span>Reseña</span>
-                    <textarea id="fText" rows="4" maxlength="240" required
-                        placeholder="Cuenta tu experiencia..."></textarea>
-                    <div class="charCount"><span id="charNow">0</span>/240</div>
-                </label>
-
-                <button class="primaryBtn" id="btnSubmitReview" type="submit">
-                    Enviar (queda pendiente de aprobación)
-                </button>
-
-                <div class="formNote">Tu reseña se publicará cuando sea aprobada ✅</div>
-            </form>
+      <article class="glassCard reviewsCard">
+        <div class="cardTitle">
+          <span>Reseñas</span>
         </div>
+        <div class="reviewsList" id="reviewsList"></div>
+      </article>
     </section>
+  </main>
 
-    <!-- ✅ Lightbox (SIN flechas) -->
-    <section class="lightbox" id="lightbox" aria-hidden="true">
-        <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
-        <button class="lightbox__close" id="btnCloseLightbox" aria-label="Cerrar">
-            ✕
+  <!-- Bottom nav -->
+  <nav class="bottomNav" aria-label="Navegación">
+    <button class="navBtn active" data-tab="home" aria-label="Inicio">
+      <svg class="navIcon" viewBox="0 0 24 24">
+        <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z" />
+      </svg>
+    </button>
+
+    <button class="navBtn" data-tab="search" aria-label="Buscar">
+      <svg class="navIcon" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M21 21l-4.35-4.35"></path>
+      </svg>
+    </button>
+
+    <button class="navBtn" data-tab="bag" aria-label="Carrito">
+      <svg class="navIcon" viewBox="0 0 24 24">
+        <path d="M6 7h12l-1 14H7L6 7z"></path>
+        <path d="M9 7a3 3 0 0 1 6 0"></path>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Drawer (puede quedarse aunque ya no haya botón hamburguesa) -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer__backdrop" id="drawerBackdrop"></div>
+    <div class="drawer__panel" role="dialog" aria-label="Menú lateral">
+      <div class="drawer__header">
+        <div class="drawer__title">Menú</div>
+        <button class="iconBtn glassBtn" id="btnCloseDrawer" aria-label="Cerrar">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
         </button>
-        <img id="lightboxImg" alt="Imagen" />
-    </section>
+      </div>
 
-    <script type="module" src="./app.js"></script>
+      <button class="drawerItem" data-tab="home">Inicio</button>
+      <button class="drawerItem" data-tab="search">Buscar</button>
+      <button class="drawerItem" data-tab="bag">Carrito</button>
+    </div>
+  </aside>
+
+  <!-- Ratings Sheet -->
+  <section class="sheet" id="ratingsSheet" aria-hidden="true">
+    <div class="sheet__backdrop" id="ratingsBackdrop"></div>
+    <div class="sheet__panel" role="dialog" aria-label="Calificaciones">
+      <div class="sheet__handle"></div>
+
+      <div class="sheet__header">
+        <div class="sheet__title">Calificaciones</div>
+        <button class="iconBtn glassBtn" id="btnCloseRatings" aria-label="Cerrar">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="sheet__summary">
+        <div>
+          <div class="sheet__big" id="sheetRatingValue">4.8</div>
+          <div class="sheet__small" id="sheetRatingCount">0 reseñas</div>
+        </div>
+      </div>
+
+      <div class="breakdown" id="breakdown"></div>
+
+      <div class="sheet__actions sheet__actions--below">
+        <button class="primaryBtn" id="btnOpenReviewForm">
+          Publicar reseña
+        </button>
+        <div class="sheet__hint">Puedes deslizar para ver más.</div>
+      </div>
+
+      <div class="sheetReviewsWrap" id="sheetReviewsWrap">
+        <div class="sheetReviewsHeader">
+          <div class="sheetReviewsTitle">Reseñas</div>
+          <div class="sheetReviewsCount" id="sheetReviewsCount">0</div>
+        </div>
+        <div class="sheetReviewsList" id="sheetReviewsList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Review Form Sheet -->
+  <section class="sheet" id="reviewSheet" aria-hidden="true">
+    <div class="sheet__backdrop" id="reviewBackdrop"></div>
+    <div class="sheet__panel" role="dialog" aria-label="Publicar reseña">
+      <div class="sheet__handle"></div>
+
+      <div class="sheet__header">
+        <div class="sheet__title">Publicar reseña</div>
+        <button class="iconBtn glassBtn" id="btnCloseReview" aria-label="Cerrar">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form class="form" id="reviewForm">
+        <label class="field">
+          <span>Nombre</span>
+          <input id="fUsername" maxlength="24" required placeholder="Ej. Angel" />
+        </label>
+
+        <label class="field">
+          <span>Calificación</span>
+          <select id="fRating" required>
+            <option value="5">5 ★★★★★</option>
+            <option value="4">4 ★★★★</option>
+            <option value="3">3 ★★★</option>
+            <option value="2">2 ★★</option>
+            <option value="1">1 ★</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Servicio comprado</span>
+          <input id="fService" type="text" maxlength="40" required
+            placeholder="Ej. Netflix Premium / Disney+ / Spotify" />
+        </label>
+
+        <label class="field">
+          <span>Reseña</span>
+          <textarea id="fText" rows="4" maxlength="240" required placeholder="Cuenta tu experiencia..."></textarea>
+          <div class="charCount"><span id="charNow">0</span>/240</div>
+        </label>
+
+        <button class="primaryBtn" id="btnSubmitReview" type="submit">
+          Enviar (queda pendiente de aprobación)
+        </button>
+
+        <div class="formNote">Tu reseña se publicará cuando sea aprobada ✅</div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ✅ Lightbox (SIN flechas) -->
+  <section class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+    <button class="lightbox__close" id="btnCloseLightbox" aria-label="Cerrar">
+      ✕
+    </button>
+    <img id="lightboxImg" alt="Imagen" />
+  </section>
+
+  <script type="module" src="./app.js"></script>
 </body>
 
 </html>
