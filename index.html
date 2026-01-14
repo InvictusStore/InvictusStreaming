@@ -1,212 +1,234 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Invictus Streaming</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Invictus Streaming</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
 
-  <div class="hero">
-    <div class="hero__bg" id="heroBg"></div>
-    <div class="hero__overlay"></div>
+  <body>
+    <main class="hero" id="hero">
+      <div class="hero__bg" id="heroBg"></div>
 
-    <header class="topbar">
-      <button class="glassBtn iconBtn" id="btnMenu" aria-label="Menú">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
+      <!-- Top bar -->
+      <header class="topbar">
+        <button class="iconBtn glassBtn" id="btnMenu" aria-label="Abrir menú">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
 
-      <button class="glassPill" id="btnLogin" type="button">Iniciar sesión</button>
+        <button class="glassPill" id="btnLogin">Entregas Inmediatas</button>
 
-      <button class="glassBtn iconBtn" id="btnShare" aria-label="Compartir">
-        <svg class="icon" viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13"/><path d="M7 8l5-5 5 5"/></svg>
-      </button>
-    </header>
+        <button class="iconBtn glassBtn" id="btnShare" aria-label="Compartir">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M15 8a3 3 0 1 0-2.83-4"></path>
+            <path d="M16 8l-8 4"></path>
+            <path d="M8 12l8 4"></path>
+            <path d="M9 20a3 3 0 1 0-2.83-4"></path>
+            <path d="M21 12a3 3 0 1 0-2.83-4"></path>
+          </svg>
+        </button>
+      </header>
 
-    <button class="glassPill floatingSearch" id="btnSearch" type="button">Buscar</button>
+      <!-- Floating search -->
+      <div class="floatingSearch">
+        <button class="iconBtn glassBtn" id="btnSearch" aria-label="Buscar">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M21 21l-4.35-4.35"></path>
+            <circle cx="11" cy="11" r="7"></circle>
+          </svg>
+        </button>
+      </div>
 
-    <main class="centerContent">
-      <h1 class="brandTitle" id="brandTitle">INVICTUS STREAMING</h1>
+      <!-- Center brand -->
+      <section class="centerContent">
+        <h1 class="brandTitle" id="brandTitle">INVICTUS STREAMING</h1>
 
-      <button class="ratingLine" id="btnOpenRatings" type="button">
-        <span class="ratingValue" id="ratingValue">4.8</span>
-        <span class="star">★</span>
-        <span class="ratingCount" id="ratingCount">(0)</span>
-      </button>
+        <button class="ratingLine" id="btnOpenRatings" type="button">
+          <span class="ratingValue" id="ratingValue">4.8</span>
+          <span class="star">★★★★★</span>
+          <span class="ratingCount" id="ratingCount">(0)</span>
+        </button>
+      </section>
+
+      <!-- Cards -->
+      <section class="cards">
+        <article class="glassCard">
+          <div class="cardTitle" id="platformsTitle">Vuelve a entrar</div>
+          <div class="hScroll" id="platformsRow"></div>
+        </article>
+
+        <article class="glassCard">
+          <div class="cardTitle" id="screensTitle">Para ti</div>
+          <div class="screensRow" id="screensRow"></div>
+        </article>
+
+        <article class="glassCard reviewsCard">
+          <div class="cardTitle">
+            <span>Reseñas</span>
+          </div>
+          <div class="reviewsList" id="reviewsList"></div>
+        </article>
+      </section>
     </main>
 
-    <section class="cards">
-      <!-- CARD 1: PLATAFORMAS -->
-      <div class="glassCard">
-        <div class="cardTitle" id="platformsTitle">Vuelve a entrar</div>
+    <!-- Bottom nav -->
+    <nav class="bottomNav" aria-label="Navegación">
+      <button class="navBtn active" data-tab="home" aria-label="Inicio">
+        <svg class="navIcon" viewBox="0 0 24 24">
+          <path d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1v-10.5z" />
+        </svg>
+      </button>
 
-        <!-- ✅ Plataformas: colapsado (3) + botón "Ver todas" para expandir -->
-        <div class="platformsWrap" id="platformsWrap">
-          <div class="hScroll" id="platformsRow">
-            <!-- items dinámicos -->
+      <button class="navBtn" data-tab="search" aria-label="Buscar">
+        <svg class="navIcon" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M21 21l-4.35-4.35"></path>
+        </svg>
+      </button>
+
+      <button class="navBtn" data-tab="bag" aria-label="Carrito">
+        <svg class="navIcon" viewBox="0 0 24 24">
+          <path d="M6 7h12l-1 14H7L6 7z"></path>
+          <path d="M9 7a3 3 0 0 1 6 0"></path>
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Drawer -->
+    <aside class="drawer" id="drawer" aria-hidden="true">
+      <div class="drawer__backdrop" id="drawerBackdrop"></div>
+      <div class="drawer__panel" role="dialog" aria-label="Menú lateral">
+        <div class="drawer__header">
+          <div class="drawer__title">Menú</div>
+          <button class="iconBtn glassBtn" id="btnCloseDrawer" aria-label="Cerrar">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <button class="drawerItem" data-tab="home">Inicio</button>
+        <button class="drawerItem" data-tab="search">Buscar</button>
+        <button class="drawerItem" data-tab="bag">Carrito</button>
+      </div>
+    </aside>
+
+    <!-- Ratings Sheet -->
+    <section class="sheet" id="ratingsSheet" aria-hidden="true">
+      <div class="sheet__backdrop" id="ratingsBackdrop"></div>
+      <div class="sheet__panel" role="dialog" aria-label="Calificaciones">
+        <div class="sheet__handle"></div>
+
+        <div class="sheet__header">
+          <div class="sheet__title">Calificaciones</div>
+          <button class="iconBtn glassBtn" id="btnCloseRatings" aria-label="Cerrar">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="sheet__summary">
+          <div>
+            <div class="sheet__big" id="sheetRatingValue">4.8</div>
+            <div class="sheet__small" id="sheetRatingCount">0 reseñas</div>
           </div>
-
-          <!-- solo se muestra si hay más de 3 plataformas -->
-          <button class="toggleAllBtn" id="btnTogglePlatforms" type="button" hidden>
-            Ver todas
-          </button>
-        </div>
-      </div>
-
-      <!-- CARD 2: SCREENSHOTS -->
-      <div class="glassCard">
-        <div class="cardTitle" id="screensTitle">Para ti</div>
-        <div class="screensRow" id="screensRow">
-          <!-- dinámico -->
-        </div>
-      </div>
-
-      <!-- CARD 3: REVIEWS -->
-      <div class="glassCard reviewsCard">
-        <div class="cardTitle">
-          Reseñas
-          <button class="glassBtn" id="btnOpenReviewForm" type="button" style="padding:10px 14px;border-radius:16px;border:none;cursor:pointer;font-weight:900;">
-            Publicar
-          </button>
         </div>
 
-        <div class="reviewsList" id="reviewsList">
-          <!-- dinámico -->
+        <div class="breakdown" id="breakdown"></div>
+
+        <!-- ✅ MOVIDO: botón + hint debajo de la tabla y arriba de "Reseñas" -->
+        <div class="sheet__actions sheet__actions--below">
+          <button class="primaryBtn" id="btnOpenReviewForm">Publicar reseña</button>
+          <div class="sheet__hint">Puedes deslizar para ver más.</div>
+        </div>
+
+        <!-- ✅ NUEVO: lista de reseñas dentro del modal (deslizable) -->
+        <div class="sheetReviewsWrap" id="sheetReviewsWrap">
+          <div class="sheetReviewsHeader">
+            <div class="sheetReviewsTitle">Reseñas</div>
+            <div class="sheetReviewsCount" id="sheetReviewsCount">0</div>
+          </div>
+          <div class="sheetReviewsList" id="sheetReviewsList"></div>
         </div>
       </div>
     </section>
 
-    <!-- Bottom nav -->
-    <nav class="bottomNav" aria-label="Navegación inferior">
-      <button class="navBtn active" data-tab="home" aria-label="Inicio">
-        <svg class="navIcon" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-      </button>
-      <button class="navBtn" data-tab="platforms" aria-label="Plataformas">
-        <svg class="navIcon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-      </button>
-      <button class="navBtn" data-tab="gallery" aria-label="Galería">
-        <svg class="navIcon" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 11l2 2 4-4 4 4"/></svg>
-      </button>
-      <button class="navBtn" data-tab="search" aria-label="Buscar">
-        <svg class="navIcon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
-      </button>
-    </nav>
-  </div>
+    <!-- Review Form Sheet -->
+    <section class="sheet" id="reviewSheet" aria-hidden="true">
+      <div class="sheet__backdrop" id="reviewBackdrop"></div>
+      <div class="sheet__panel" role="dialog" aria-label="Publicar reseña">
+        <div class="sheet__handle"></div>
 
-  <!-- Drawer -->
-  <aside class="drawer" id="drawer" aria-hidden="true">
-    <div class="drawer__backdrop" id="drawerBackdrop"></div>
-    <div class="drawer__panel">
-      <div class="drawer__header">
-        <div class="drawer__title">Menú</div>
-        <button class="glassBtn iconBtn" id="btnCloseDrawer" aria-label="Cerrar">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-
-      <button class="drawerItem" data-tab="home">Inicio</button>
-      <button class="drawerItem" data-tab="platforms">Plataformas</button>
-      <button class="drawerItem" data-tab="gallery">Galería</button>
-      <button class="drawerItem" data-tab="search">Buscar</button>
-    </div>
-  </aside>
-
-  <!-- Ratings sheet -->
-  <section class="sheet" id="ratingsSheet" aria-hidden="true">
-    <div class="sheet__backdrop" id="ratingsBackdrop"></div>
-    <div class="sheet__panel">
-      <div class="sheet__handle"></div>
-
-      <div class="sheet__header">
-        <div class="sheet__title">Calificaciones</div>
-        <button class="glassBtn iconBtn" id="btnCloseRatings" aria-label="Cerrar">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-
-      <div class="sheet__summary">
-        <div class="sheet__big" id="sheetRatingValue">4.8</div>
-        <div class="sheet__small" id="sheetRatingCount">0 reseñas</div>
-      </div>
-
-      <div class="breakdown" id="breakdown">
-        <!-- dinámico -->
-      </div>
-
-      <div class="sheet__actions sheet__actions--below">
-        <button class="primaryBtn" id="btnOpenReviewForm2" type="button" onclick="document.getElementById('btnOpenReviewForm').click()">
-          Publicar reseña
-        </button>
-        <div class="sheet__hint">Las reseñas se aprueban manualmente.</div>
-      </div>
-
-      <!-- listado (opcional, si tú lo usas en otro punto) -->
-      <div class="sheetReviewsWrap" id="sheetReviewsWrap" style="display:none;">
-        <div class="sheetReviewsHeader">
-          <div class="sheetReviewsTitle">Reseñas</div>
-          <div class="sheetReviewsCount" id="sheetReviewsCount">0</div>
-        </div>
-        <div class="sheetReviewsList" id="sheetReviewsList"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Review form sheet -->
-  <section class="sheet" id="reviewSheet" aria-hidden="true">
-    <div class="sheet__backdrop" id="reviewBackdrop"></div>
-    <div class="sheet__panel">
-      <div class="sheet__handle"></div>
-
-      <div class="sheet__header">
-        <div class="sheet__title">Publicar reseña</div>
-        <button class="glassBtn iconBtn" id="btnCloseReview" aria-label="Cerrar">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
-        </button>
-      </div>
-
-      <form class="form" id="reviewForm">
-        <div class="field">
-          <span>Nombre</span>
-          <input id="fUsername" type="text" maxlength="30" required />
+        <div class="sheet__header">
+          <div class="sheet__title">Publicar reseña</div>
+          <button class="iconBtn glassBtn" id="btnCloseReview" aria-label="Cerrar">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
         </div>
 
-        <div class="field">
-          <span>Calificación</span>
-          <select id="fRating" required>
-            <option value="">Selecciona</option>
-            <option value="5">★★★★★ (5)</option>
-            <option value="4">★★★★☆ (4)</option>
-            <option value="3">★★★☆☆ (3)</option>
-            <option value="2">★★☆☆☆ (2)</option>
-            <option value="1">★☆☆☆☆ (1)</option>
-          </select>
-        </div>
+        <form class="form" id="reviewForm">
+          <label class="field">
+            <span>Nombre</span>
+            <input id="fUsername" maxlength="24" required placeholder="Ej. Angel" />
+          </label>
 
-        <div class="field">
-          <span>Reseña</span>
-          <textarea id="fText" rows="4" maxlength="300" required></textarea>
-          <div class="charCount"><span id="charNow">0</span>/300</div>
-        </div>
+          <label class="field">
+            <span>Calificación</span>
+            <select id="fRating" required>
+              <option value="5">5 ★★★★★</option>
+              <option value="4">4 ★★★★</option>
+              <option value="3">3 ★★★</option>
+              <option value="2">2 ★★</option>
+              <option value="1">1 ★</option>
+            </select>
+          </label>
 
-        <button class="primaryBtn" id="btnSubmitReview" type="submit">Enviar</button>
-        <div class="formNote">Tu reseña quedará pendiente de aprobación.</div>
-      </form>
-    </div>
-  </section>
+          <label class="field">
+            <span>Servicio comprado</span>
+            <input
+              id="fService"
+              type="text"
+              maxlength="40"
+              required
+              placeholder="Ej. Netflix Premium / Disney+ / Spotify"
+            />
+          </label>
 
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
-    <img id="lightboxImg" alt="Vista previa" />
-    <button class="lightbox__close" id="btnCloseLightbox" aria-label="Cerrar">✕</button>
-    <button class="lightbox__nav left" id="btnPrevImg" aria-label="Anterior">‹</button>
-    <button class="lightbox__nav right" id="btnNextImg" aria-label="Siguiente">›</button>
-  </div>
+          <label class="field">
+            <span>Reseña</span>
+            <textarea id="fText" rows="4" maxlength="240" required placeholder="Cuenta tu experiencia..."></textarea>
+            <div class="charCount"><span id="charNow">0</span>/240</div>
+          </label>
 
-  <script type="module" src="app.js"></script>
-</body>
+          <button class="primaryBtn" id="btnSubmitReview" type="submit">
+            Enviar (queda pendiente de aprobación)
+          </button>
+
+          <div class="formNote">
+            Tu reseña se publicará cuando sea aprobada ✅
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <section class="lightbox" id="lightbox" aria-hidden="true">
+      <div class="lightbox__backdrop" id="lightboxBackdrop"></div>
+      <button class="lightbox__close" id="btnCloseLightbox" aria-label="Cerrar">✕</button>
+      <button class="lightbox__nav left" id="btnPrevImg" aria-label="Anterior">‹</button>
+      <button class="lightbox__nav right" id="btnNextImg" aria-label="Siguiente">›</button>
+      <img id="lightboxImg" alt="Imagen" />
+    </section>
+
+    <script type="module" src="./app.js"></script>
+  </body>
 </html>

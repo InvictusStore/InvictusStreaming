@@ -1,49 +1,44 @@
 import {
+  app,
   db,
-  doc,
-  getDoc,
   collection,
   query,
   where,
   orderBy,
   getDocs,
   addDoc,
-  serverTimestamp,
+  doc,
+  getDoc,
   updateDoc,
   increment,
   setDoc,
-  deleteDoc,
+  serverTimestamp,
 } from "./firebase.js";
 
 /** =========================
- *  Helpers / Estado
+ *  Helpers DOM / state
  *  ========================= */
 const $ = (id) => document.getElementById(id);
 
-function getAnonId() {
-  const key = "invictus_anon_id";
-  let v = localStorage.getItem(key);
-  if (!v) {
-    v = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random();
-    localStorage.setItem(key, v);
-  }
-  return v;
-}
-
 const state = {
-  settings: null,
+  settings: {},
   platforms: [],
   screens: [],
   reviews: [],
   approvedCount: 0,
-  platformsExpanded: false, // ✅ NUEVO
   breakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
-  lightboxIndex: 0,
+  lightbox: { items: [], index: 0 },
 };
 
-/** =========================
- *  UI: Drawer / Sheets / Nav
- *  ========================= */
+function escapeHtml(str) {
+  return String(str || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 function openDrawer() {
   $("drawer").classList.add("open");
   $("drawer").setAttribute("aria-hidden", "false");
@@ -66,53 +61,101 @@ function setActiveTab(tab) {
     b.classList.toggle("active", b.dataset.tab === tab);
   });
 
-  // scroll a secciones (simple MVP)
-  if (tab === "home") window.scrollTo({ top: 0, behavior: "smooth" });
-  if (tab === "platforms") $("platformsTitle").scrollIntoView({ behavior: "smooth", block: "start" });
-  if (tab === "gallery") $("screensTitle").scrollIntoView({ behavior: "smooth", block: "start" });
-  if (tab === "search") $("btnSearch").focus();
+  if (tab === "search") alert("Búsqueda próximamente 😉");
+  if (tab === "bag") alert("Carrito próximamente 😉");
 }
 
 /** =========================
- *  Firebase: cargar datos
+ *  Estrellas + fecha (Hoy/Ayer)
+ *  ========================= */
+function dayLabel(createdAt) {
+  let d = null;
+  if (createdAt && typeof createdAt.toDate === "function") d = createdAt.toDate();
+  else if (createdAt instanceof Date) d = createdAt;
+  else if (typeof createdAt === "number") d = new Date(createdAt);
+
+  if (!d || isNaN(d.getTime())) return "";
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const that = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const diffDays = Math.round((today - that) / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) return "Hoy";
+  if (diffDays === 1) return "Ayer";
+
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const yy = String(d.getFullYear()).slice(-2);
+  return `${dd}/${mm}/${yy}`;
+}
+
+function starsText(rating) {
+  const n = Math.max(1, Math.min(5, Number(rating) || 1));
+  return "★★★★★".slice(0, n) + "☆☆☆☆☆".slice(0, 5 - n);
+}
+
+/** =========================
+ *  Likes sin login (localStorage)
+ *  ========================= */
+function likesKey(reviewId) {
+  return `liked_review_${reviewId}`;
+}
+function isLikedLocally(reviewId) {
+  return localStorage.getItem(likesKey(reviewId)) === "1";
+}
+function setLikedLocally(reviewId, val) {
+  localStorage.setItem(likesKey(reviewId), val ? "1" : "0");
+}
+
+async function toggleLike(reviewId) {
+  try {
+    const liked = isLikedLocally(reviewId);
+    const ref = doc(db, "reviews", reviewId);
+
+    // Solo sumamos (sin auth no podemos evitar 100% abuso, pero reducimos con localStorage)
+    if (!liked) {
+      await updateDoc(ref, { likesCount: increment(1) });
+      setLikedLocally(reviewId, true);
+    } else {
+      // opcional: permitir “deslike” (si quieres, lo deshabilitamos)
+      // await updateDoc(ref, { likesCount: increment(-1) });
+      // setLikedLocally(reviewId, false);
+      return;
+    }
+
+    await loadApprovedReviews();
+    renderRatingLine();
+    renderBreakdown();
+    renderSheetReviews();
+    renderReviews();
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo dar like. Revisa tus reglas o consola.");
+  }
+}
+
+/** =========================
+ *  Firestore loads
  *  ========================= */
 async function loadSettings() {
-  const ref = doc(db, "settings", "public");
-  const snap = await getDoc(ref);
-  if (!snap.exists()) {
-    // fallback básico
-    state.settings = {
-      title: "Invictus Streaming",
-      heroImageUrl: "",
-      defaultAvatarUrl: "",
-      whatsappDefaultUrl: "https://wa.me/",
-      ratingDisplay: 4.8,
-      shareUrl: window.location.href,
-      platformsTitle: "Vuelve a entrar",
-      screensTitle: "Para ti",
-    };
-    return;
+  try {
+    const ref = doc(db, "settings", "public");
+    const snap = await getDoc(ref);
+    state.settings = snap.exists() ? snap.data() : {};
+  } catch (e) {
+    console.warn("Sin settings/public aún. (OK si no lo creaste)");
+    state.settings = {};
   }
-  state.settings = snap.data();
 }
 
 async function loadPlatforms() {
-  const q = query(
-    collection(db, "platforms"),
-    where("active", "==", true),
-    orderBy("order", "asc")
-  );
-  const snaps = await getDocs(q);
+  const snaps = await getDocs(query(collection(db, "platforms"), orderBy("order", "asc")));
   state.platforms = snaps.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
 async function loadScreens() {
-  const q = query(
-    collection(db, "screens"),
-    where("active", "==", true),
-    orderBy("order", "asc")
-  );
-  const snaps = await getDocs(q);
+  const snaps = await getDocs(query(collection(db, "screens"), orderBy("order", "asc")));
   state.screens = snaps.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
@@ -126,7 +169,6 @@ async function loadApprovedReviews() {
   state.reviews = snaps.docs.map((d) => ({ id: d.id, ...d.data() }));
   state.approvedCount = state.reviews.length;
 
-  // breakdown 5..1
   state.breakdown = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   for (const r of state.reviews) {
     const val = Number(r.rating) || 0;
@@ -135,19 +177,17 @@ async function loadApprovedReviews() {
 }
 
 /** =========================
- *  Render UI
+ *  Render
  *  ========================= */
 function renderHero() {
   const s = state.settings;
 
-  // Fondo
   if (s.heroImageUrl) {
     $("heroBg").style.backgroundImage = `url("${s.heroImageUrl}")`;
   } else {
     $("heroBg").style.backgroundImage = `linear-gradient(120deg, #1a0b24, #0b0b0f)`;
   }
 
-  // Títulos
   const title = (s.title || "Invictus Streaming").toUpperCase();
   $("brandTitle").textContent = title;
 
@@ -181,7 +221,7 @@ function renderBreakdown() {
     row.innerHTML = `
       <div><strong>${star}</strong> ★</div>
       <div class="bar"><div style="width:${pct}%"></div></div>
-      <div style="text-align:right;color:rgba(255,255,255,.75);font-weight:900;">${count}</div>
+      <div style="text-align:right; font-weight:900;">${count}</div>
     `;
     wrap.appendChild(row);
   }
@@ -189,66 +229,57 @@ function renderBreakdown() {
 
 function renderPlatforms() {
   const row = $("platformsRow");
-  const wrap = $("platformsWrap");
-  const toggleBtn = $("btnTogglePlatforms");
-
   row.innerHTML = "";
 
-  const fallbackWa = state.settings?.whatsappDefaultUrl || "https://wa.me/";
-
-  const all = Array.isArray(state.platforms) ? state.platforms : [];
-  const expanded = !!state.platformsExpanded;
-
-  // ✅ Cerrado: solo 3 plataformas (scroll horizontal)
-  const visible = expanded ? all : all.slice(0, 3);
-
-  visible.forEach((p) => {
-    const item = document.createElement("button");
+  state.platforms.forEach((p) => {
+    const item = document.createElement("div");
     item.className = "platformItem";
-    item.type = "button";
-    item.title = p.name;
-
-    item.innerHTML = `<img src="${p.logoUrl}" alt="${p.name}" loading="lazy" />`;
-
+    item.innerHTML = `<img src="${p.logoUrl}" alt="${escapeHtml(p.name)}" loading="lazy">`;
     item.addEventListener("click", () => {
-      const url = p.whatsappUrl || fallbackWa;
-      window.open(url, "_blank", "noopener,noreferrer");
+      const url = p.whatsappUrl || state.settings?.whatsappUrl;
+      if (url) window.open(url, "_blank");
     });
-
     row.appendChild(item);
   });
+}
 
-  // ✅ Botón: solo aparece si hay más de 3
-  if (toggleBtn) {
-    const hasMore = all.length > 3;
-    toggleBtn.hidden = !hasMore;
-    toggleBtn.textContent = expanded ? "Cerrar" : "Ver todas";
-  }
-
-  // ✅ Estilo: cuando está abierto, el row se vuelve "wrap"
-  if (wrap) {
-    wrap.classList.toggle("expanded", expanded);
-  }
+function openLightbox(items, startIndex = 0) {
+  state.lightbox.items = items;
+  state.lightbox.index = startIndex;
+  $("lightboxImg").src = items[startIndex];
+  $("lightbox").classList.add("open");
+  $("lightbox").setAttribute("aria-hidden", "false");
+}
+function closeLightbox() {
+  $("lightbox").classList.remove("open");
+  $("lightbox").setAttribute("aria-hidden", "true");
+}
+function nextImg() {
+  const items = state.lightbox.items;
+  if (!items.length) return;
+  state.lightbox.index = (state.lightbox.index + 1) % items.length;
+  $("lightboxImg").src = items[state.lightbox.index];
+}
+function prevImg() {
+  const items = state.lightbox.items;
+  if (!items.length) return;
+  state.lightbox.index = (state.lightbox.index - 1 + items.length) % items.length;
+  $("lightboxImg").src = items[state.lightbox.index];
 }
 
 function renderScreens() {
   const row = $("screensRow");
   row.innerHTML = "";
 
-  state.screens.forEach((sc, idx) => {
-    const item = document.createElement("button");
-    item.className = "screenItem";
-    item.type = "button";
-    item.innerHTML = `<img src="${sc.imageUrl}" alt="Captura ${idx + 1}" loading="lazy" />`;
+  const imgs = state.screens.map((s) => s.imageUrl);
 
-    item.addEventListener("click", () => openLightbox(idx));
+  state.screens.forEach((s, idx) => {
+    const item = document.createElement("div");
+    item.className = "screenItem";
+    item.innerHTML = `<img src="${s.imageUrl}" alt="captura" loading="lazy">`;
+    item.addEventListener("click", () => openLightbox(imgs, idx));
     row.appendChild(item);
   });
-}
-
-function starsText(n) {
-  const v = Math.max(1, Math.min(5, Number(n) || 1));
-  return "★".repeat(v) + "☆".repeat(5 - v);
 }
 
 function renderReviews() {
@@ -261,90 +292,105 @@ function renderReviews() {
   }
 
   const avatar = state.settings?.defaultAvatarUrl || "";
+  const preview = state.reviews.slice(0, 4);
 
-  state.reviews.forEach((r) => {
-    const card = document.createElement("div");
-    card.className = "review";
+  preview.forEach((r) => {
+    const item = document.createElement("div");
+    item.className = "reviewItem";
 
     const liked = isLikedLocally(r.id);
+    const day = dayLabel(r.createdAt);
+    const service = r.service || "Invictus Streaming";
 
-    card.innerHTML = `
+    item.innerHTML = `
       <div class="reviewAvatar">
         <img src="${avatar}" alt="avatar" loading="lazy" />
       </div>
-      <div class="reviewBody">
-        <div class="reviewTop">
-          <div class="reviewName">${escapeHtml(r.username || "Usuario")}</div>
-          <div class="reviewStars">${starsText(r.rating)}</div>
-        </div>
-        <div class="reviewText">${escapeHtml(r.text || "")}</div>
+      <div class="reviewContent">
+        <div class="reviewStarsRow">${starsText(r.rating)}</div>
 
-        <div class="likeRow">
-          <button class="likeBtn ${liked ? "liked" : ""}" data-review="${r.id}">
-            ❤ <span>${Number(r.likesCount || 0)}</span>
+        <div class="reviewMeta">
+          <div class="reviewName">${escapeHtml(r.username || "Usuario")}</div>
+          ${day ? `<div class="reviewDay">· ${escapeHtml(day)}</div>` : ``}
+        </div>
+
+        <div class="reviewService">${escapeHtml(service)}</div>
+
+        <div class="reviewText2">${escapeHtml(r.text || "")}</div>
+
+        <div class="helpfulRow">
+          <button class="helpfulBtn ${liked ? "liked" : ""}" data-review="${r.id}">
+            <span class="heart">❤</span> Útil <span>${Number(r.likesCount || 0)}</span>
           </button>
         </div>
       </div>
     `;
-
-    list.appendChild(card);
+    list.appendChild(item);
   });
 
-  // listeners likes
-  list.querySelectorAll(".likeBtn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const reviewId = btn.getAttribute("data-review");
-      await toggleLike(reviewId, btn);
-    });
-  });
+  list.onclick = async (e) => {
+    const btn = e.target.closest("[data-review]");
+    if (!btn) return;
+    const id = btn.getAttribute("data-review");
+    await toggleLike(id);
+  };
 }
 
-/** =========================
- *  Likes sin login (anonId)
- *  ========================= */
-function localLikeKey(reviewId) {
-  return `invictus_like_${reviewId}`;
-}
-function isLikedLocally(reviewId) {
-  return localStorage.getItem(localLikeKey(reviewId)) === "1";
-}
-function setLikedLocally(reviewId, val) {
-  localStorage.setItem(localLikeKey(reviewId), val ? "1" : "0");
-}
+function renderSheetReviews() {
+  const list = $("sheetReviewsList");
+  const countEl = $("sheetReviewsCount");
+  if (!list || !countEl) return;
 
-async function toggleLike(reviewId, btnEl) {
-  const anonId = getAnonId();
-  const likedNow = isLikedLocally(reviewId);
+  list.innerHTML = "";
+  countEl.textContent = `${state.approvedCount}`;
 
-  const reviewRef = doc(db, "reviews", reviewId);
-  const likeRef = doc(db, "reviews", reviewId, "likes", anonId);
-
-  // UI optimista
-  const countSpan = btnEl.querySelector("span");
-  let current = Number(countSpan?.textContent || 0);
-
-  try {
-    if (!likedNow) {
-      // create like doc
-      await setDoc(likeRef, { createdAt: serverTimestamp() });
-      // increment likesCount
-      await updateDoc(reviewRef, { likesCount: increment(1) });
-
-      setLikedLocally(reviewId, true);
-      btnEl.classList.add("liked");
-      countSpan.textContent = String(current + 1);
-    } else {
-      await deleteDoc(likeRef);
-      await updateDoc(reviewRef, { likesCount: increment(-1) });
-
-      setLikedLocally(reviewId, false);
-      btnEl.classList.remove("liked");
-      countSpan.textContent = String(Math.max(0, current - 1));
-    }
-  } catch (e) {
-    console.error(e);
-    alert("No se pudo registrar el like. Intenta de nuevo.");
+  if (state.reviews.length === 0) {
+    list.innerHTML = `<div style="color:rgba(0,0,0,.55);font-weight:800;padding:8px 0;">Aún no hay reseñas.</div>`;
+    return;
   }
+
+  const avatar = state.settings?.defaultAvatarUrl || "";
+
+  state.reviews.forEach((r) => {
+    const item = document.createElement("div");
+    item.className = "reviewItem";
+
+    const liked = isLikedLocally(r.id);
+    const day = dayLabel(r.createdAt);
+    const service = r.service || "Invictus Streaming";
+
+    item.innerHTML = `
+      <div class="reviewAvatar">
+        <img src="${avatar}" alt="avatar" loading="lazy" />
+      </div>
+      <div class="reviewContent">
+        <div class="reviewStarsRow">${starsText(r.rating)}</div>
+
+        <div class="reviewMeta">
+          <div class="reviewName">${escapeHtml(r.username || "Usuario")}</div>
+          ${day ? `<div class="reviewDay">· ${escapeHtml(day)}</div>` : ``}
+        </div>
+
+        <div class="reviewService">${escapeHtml(service)}</div>
+
+        <div class="reviewText2">${escapeHtml(r.text || "")}</div>
+
+        <div class="helpfulRow">
+          <button class="helpfulBtn ${liked ? "liked" : ""}" data-review="${r.id}">
+            <span class="heart">❤</span> Útil <span>${Number(r.likesCount || 0)}</span>
+          </button>
+        </div>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+
+  list.onclick = async (e) => {
+    const btn = e.target.closest("[data-review]");
+    if (!btn) return;
+    const id = btn.getAttribute("data-review");
+    await toggleLike(id);
+  };
 }
 
 /** =========================
@@ -355,13 +401,15 @@ async function submitReview(e) {
 
   const username = $("fUsername").value.trim();
   const rating = Number($("fRating").value);
+  const service = $("fService").value.trim();
   const text = $("fText").value.trim();
 
-  if (!username || !text || !(rating >= 1 && rating <= 5)) return;
+  if (!username || !service || !text || !(rating >= 1 && rating <= 5)) return;
 
   const payload = {
     username,
     rating,
+    service,
     text,
     approved: false,
     likesCount: 0,
@@ -370,18 +418,25 @@ async function submitReview(e) {
 
   try {
     $("btnSubmitReview").disabled = true;
+    $("btnSubmitReview").textContent = "Enviando...";
+
     await addDoc(collection(db, "reviews"), payload);
 
-    $("reviewForm").reset();
+    $("fUsername").value = "";
+    $("fService").value = "";
+    $("fRating").value = "5";
+    $("fText").value = "";
     $("charNow").textContent = "0";
-    closeSheet("reviewSheet");
 
-    alert("¡Listo! Tu reseña fue enviada y quedará pendiente de aprobación.");
+    alert("¡Gracias! Tu reseña quedó pendiente de aprobación ✅");
+    closeSheet("reviewSheet");
+    openSheet("ratingsSheet");
   } catch (err) {
     console.error(err);
-    alert("No se pudo enviar la reseña. Intenta de nuevo.");
+    alert("No se pudo publicar. Revisa tus reglas de Firestore y la consola.");
   } finally {
     $("btnSubmitReview").disabled = false;
+    $("btnSubmitReview").textContent = "Enviar (queda pendiente de aprobación)";
   }
 }
 
@@ -397,56 +452,15 @@ async function sharePage() {
       await navigator.share({ title, url });
     } else {
       await navigator.clipboard.writeText(url);
-      alert("Link copiado al portapapeles ✅");
+      alert("Link copiado ✅");
     }
   } catch (e) {
-    // Si cancela compartir, no hacemos nada
+    console.warn(e);
   }
 }
 
 /** =========================
- *  Lightbox
- *  ========================= */
-function openLightbox(index) {
-  state.lightboxIndex = index;
-  $("lightbox").classList.add("open");
-  $("lightbox").setAttribute("aria-hidden", "false");
-  renderLightbox();
-}
-function closeLightbox() {
-  $("lightbox").classList.remove("open");
-  $("lightbox").setAttribute("aria-hidden", "true");
-}
-function renderLightbox() {
-  const item = state.screens[state.lightboxIndex];
-  if (!item) return;
-  $("lightboxImg").src = item.imageUrl;
-}
-function nextImg() {
-  if (state.screens.length === 0) return;
-  state.lightboxIndex = (state.lightboxIndex + 1) % state.screens.length;
-  renderLightbox();
-}
-function prevImg() {
-  if (state.screens.length === 0) return;
-  state.lightboxIndex = (state.lightboxIndex - 1 + state.screens.length) % state.screens.length;
-  renderLightbox();
-}
-
-/** =========================
- *  Utils
- *  ========================= */
-function escapeHtml(str) {
-  return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-/** =========================
- *  Init
+ *  Wire UI
  *  ========================= */
 function wireUI() {
   // Drawer
@@ -464,21 +478,10 @@ function wireUI() {
   // Share
   $("btnShare").addEventListener("click", sharePage);
 
-  // ✅ Plataformas: ver todas / cerrar
-  const toggleBtn = document.getElementById("btnTogglePlatforms");
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      state.platformsExpanded = !state.platformsExpanded;
-      renderPlatforms();
-    });
-  }
-
   // Ratings sheet
-  $("btnOpenRatings").addEventListener("click", () => {
-    openSheet("ratingsSheet");
-  });
+  $("btnOpenRatings").addEventListener("click", () => openSheet("ratingsSheet"));
   $("btnCloseRatings").addEventListener("click", () => closeSheet("ratingsSheet"));
-  $("ratingsBackdrop").addEventListener("click", () => closeSheet("ratingsSheet"));
+  // ✅ Sin overlay: NO cerramos al tocar fuera
 
   // Open review form
   $("btnOpenReviewForm").addEventListener("click", () => {
@@ -486,11 +489,10 @@ function wireUI() {
     openSheet("reviewSheet");
   });
 
-  // Review sheet close
   $("btnCloseReview").addEventListener("click", () => closeSheet("reviewSheet"));
-  $("reviewBackdrop").addEventListener("click", () => closeSheet("reviewSheet"));
+  // ✅ Sin overlay: NO cerramos al tocar fuera
 
-  // Form submit + contador caracteres
+  // Form
   $("reviewForm").addEventListener("submit", submitReview);
   $("fText").addEventListener("input", () => {
     $("charNow").textContent = String($("fText").value.length);
@@ -509,6 +511,7 @@ function wireUI() {
 
   // “Iniciar sesión” sin funcionalidad
   $("btnLogin").addEventListener("click", () => alert("Próximamente 😉"));
+
   // Search sin funcionalidad por ahora
   $("btnSearch").addEventListener("click", () => alert("Búsqueda próximamente 😉"));
 }
@@ -528,6 +531,7 @@ async function start() {
 
   renderRatingLine();
   renderBreakdown();
+  renderSheetReviews();
 }
 
 start();
