@@ -78,7 +78,7 @@ function setActiveTab(tab) {
 
   if (tab === "whatsapp") {
     const url =
-      state.settings?.whatsappDefaultUrlMo ||
+      state.settings?.whatsappDefaultUrl ||
       state.settings?.whatsappUrl ||
       "https://wa.me/";
     window.open(url, "_blank", "noopener,noreferrer");
@@ -272,7 +272,7 @@ function renderPlatforms() {
     item.className = "platformItem";
     item.innerHTML = `<img src="${escapeHtml(p.logoUrl)}" alt="${escapeHtml(p.name)}" loading="lazy">`;
     item.addEventListener("click", () => {
-      const url = p.whatsappUrl || state.settings?.whatsappDefaultUrlMo || state.settings?.whatsappUrl;
+      const url = p.whatsappUrl || state.settings?.whatsappDefaultUrl || state.settings?.whatsappUrl;
       if (url) window.open(url, "_blank");
     });
     row.appendChild(item);
@@ -595,7 +595,7 @@ function wireUI() {
   // ✅ AppBar: WhatsApp ahora es el botón DERECHO (verde)
   $("btnWhatsAppTop")?.addEventListener("click", () => {
     const url =
-      state.settings?.whatsappDefaultUrlMo ||
+      state.settings?.whatsappDefaultUrl ||
       state.settings?.whatsappUrl || // por si antes lo tenías así
       "https://wa.me/";
     window.open(url, "_blank", "noopener,noreferrer");
