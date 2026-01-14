@@ -589,6 +589,8 @@ function wireUI() {
   $("btnOpenRatings")?.addEventListener("click", () => openSheet("ratingsSheet"));
   $("btnCloseRatings")?.addEventListener("click", () => closeSheet("ratingsSheet"));
 
+  $("btnMoreReviews")?.addEventListener("click", () => openSheet("ratingsSheet"));
+
   // Open review form
   $("btnOpenReviewForm")?.addEventListener("click", () => {
     closeSheet("ratingsSheet");
