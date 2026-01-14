@@ -1,789 +1,757 @@
 :root {
-    --glass: rgba(0, 0, 0, .06);
-    --glass2: rgba(0, 0, 0, .04);
-    --stroke: rgba(0, 0, 0, .10);
+  --glass: rgba(0, 0, 0, .06);
+  --glass2: rgba(0, 0, 0, .04);
+  --stroke: rgba(0, 0, 0, .10);
 
-    /* ✅ Texto general negro */
-    --text: rgba(0, 0, 0, .92);
-    --muted: rgba(0, 0, 0, .60);
+  /* ✅ Texto general negro */
+  --text: rgba(0, 0, 0, .92);
+  --muted: rgba(0, 0, 0, .60);
 
-    --shadow: 0 12px 40px rgba(0, 0, 0, .18);
-    --radius: 26px;
-    --primary: #fc306d;
+  --shadow: 0 12px 40px rgba(0, 0, 0, .18);
+  --radius: 26px;
+  --primary: #fc306d;
 
-    /* Reviews UI vars (por defecto en negro) */
-    --reviewBg: rgba(0, 0, 0, .06);
-    --reviewBorder: rgba(0, 0, 0, .10);
-    --reviewText: rgba(0, 0, 0, .92);
-    --reviewMuted: rgba(0, 0, 0, .55);
-    --reviewStar: #f5b301;
-    --reviewDivider: rgba(0, 0, 0, .10);
-    --reviewAction: rgba(0, 0, 0, .60);
+  /* Reviews UI vars (por defecto en negro) */
+  --reviewBg: rgba(0, 0, 0, .06);
+  --reviewBorder: rgba(0, 0, 0, .10);
+  --reviewText: rgba(0, 0, 0, .92);
+  --reviewMuted: rgba(0, 0, 0, .55);
+  --reviewStar: #f5b301;
+  --reviewDivider: rgba(0, 0, 0, .10);
+  --reviewAction: rgba(0, 0, 0, .60);
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html,
-body {
-    height: 100%;
-    margin: 0;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
 
 /* ✅ Fondo general blanco + texto negro */
 body {
-    background: #ffffff;
-    color: var(--text);
+  background: #ffffff;
+  color: var(--text);
 }
 
 /* =========================
    ✅ HERO (imagen 50% + abajo blanco)
    ========================= */
 .hero {
-    min-height: 100vh;
-    position: relative;
-    overflow: hidden;
-    background: #ffffff;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
 }
 
 /* ✅ Imagen SOLO arriba (mitad de pantalla) */
 .hero__bg {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 50vh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transform: none !important;
-    filter: none !important;
-    opacity: 1 !important;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 50vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
 
 /* ✅ Overlay eliminado */
-.hero__overlay {
-    display: none !important;
-}
+.hero__overlay { display: none !important; }
 
 .topbar {
-    position: relative;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    gap: 10px;
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  gap: 10px;
 }
 
 /* ✅ Base Glass (claro) */
 .glassBtn,
 .glassPill {
-    background: var(--glass);
-    border: 1px solid var(--stroke);
-    color: var(--text);
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+  background: var(--glass);
+  border: 1px solid var(--stroke);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* ✅ APPBAR: glass NEGRO (solo arriba) */
 .topbar .glassBtn,
-.topbar .glassPill {
-    background: rgba(0, 0, 0, .26) !important;
-    border: 1px solid rgba(255, 255, 255, .22) !important;
-    color: rgba(255, 255, 255, .92) !important;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, .28) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
+.topbar .glassPill{
+  background: rgba(0,0,0,.26) !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  color: rgba(255,255,255,.92) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,.28) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
 }
 
 .iconBtn {
-    width: 46px;
-    height: 46px;
-    border-radius: 999px;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
-    border: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: none;
 }
 
-.glassBtn {
-    border-radius: 999px;
-}
+.glassBtn { border-radius: 999px; }
 
 .glassPill {
-    border-radius: 999px;
-    padding: 12px 16px;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    min-width: 150px;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  min-width: 150px;
 }
 
 /* ✅ Iconos (por defecto negros) */
 .icon {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: rgba(0, 0, 0, .75);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: rgba(0, 0, 0, .75);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ✅ Iconos del AppBar en blanco */
-.topbar .icon {
-    stroke: rgba(255, 255, 255, .90) !important;
+.topbar .icon{
+  stroke: rgba(255,255,255,.90) !important;
 }
 
 /* Oculto */
-.floatingSearch {
-    display: none !important;
-}
+.floatingSearch { display: none !important; }
 
 .centerContent {
-    position: relative;
-    z-index: 4;
-    text-align: center;
+  position: relative;
+  z-index: 4;
+  text-align: center;
 
-    /* ✅ Mantienes tu “altura” (estos se quedan igual) */
-    padding-top: 60px;
-    padding-bottom: 35px;
+  /* ✅ Mantienes tu “altura” (estos se quedan igual) */
+  padding-top: 60px;
+  padding-bottom: 35px;
 
-    /* ✅ Nuevo: centra en altura dentro del área superior (50vh) */
-    height: calc(50vh - 60px - 35px);
-    min-height: 180px;
+  /* ✅ Nuevo: centra en altura dentro del área superior (50vh) */
+  height: calc(50vh - 60px - 35px);
+  min-height: 180px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    /* ✅ Controla el espacio entre título y rating */
-    gap: 10px;
+  /* ✅ Controla el espacio entre título y rating */
+  gap: 10px;
 }
 
 .brandTitle {
-    /* ✅ Antes: margin: 25px 0 10px; (esto rompía el centrado) */
-    margin: 0;
+  /* ✅ Antes: margin: 25px 0 10px; (esto rompía el centrado) */
+  margin: 0;
 
-    font-size: 52px;
-    font-weight: 800;
-    letter-spacing: .28em;
-    text-transform: uppercase;
-    text-shadow: none;
-    color: rgba(0, 0, 0, .92);
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  text-shadow: none;
+  color: rgba(0, 0, 0, .92);
 
-    /* opcional: ayuda a que se vea más centrado visualmente */
-    line-height: 1.05;
+  /* opcional: ayuda a que se vea más centrado visualmente */
+  line-height: 1.05;
 }
 
 /* ✅ Rating negro */
 .ratingLine {
-    /* ✅ evita que meta espacios raros */
-    margin: 0;
+  /* ✅ evita que meta espacios raros */
+  margin: 0;
 
-    border: none;
-    background: transparent;
-    color: var(--text);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    text-shadow: none;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  text-shadow: none;
 
-    /* opcional */
-    line-height: 1;
+  /* opcional */
+  line-height: 1;
 }
 
 
-.ratingValue {
-    font-size: 18px;
-}
-
-.star {
-    font-size: 18px;
-    color: #f5b301;
-}
-
-.ratingCount {
-    color: var(--muted);
-    font-weight: 700;
-}
+.ratingValue { font-size: 18px; }
+.star { font-size: 18px; color: #f5b301; }
+.ratingCount { color: var(--muted); font-weight: 700; }
 
 .cards {
-    position: relative;
-    z-index: 4;
-    padding: 14px 16px 110px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
+  position: relative;
+  z-index: 4;
+  padding: 14px 16px 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 /* ✅ Cards claras */
 .glassCard {
-    background: rgba(255, 255, 255, .92);
-    border: 1px solid rgba(0, 0, 0, .08);
-    border-radius: var(--radius);
-    padding: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .10);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .10);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .cardTitle {
-    font-size: 18px;
-    font-weight: 900;
-    margin-bottom: 12px;
-    letter-spacing: -.02em;
-    color: rgba(0, 0, 0, .92);
+  font-size: 18px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  letter-spacing: -.02em;
+  color: rgba(0, 0, 0, .92);
 }
 
 .hScroll {
-    display: flex;
-    gap: 14px;
-    overflow: auto;
-    padding-bottom: 8px;
-    scrollbar-width: none;
+  display: flex;
+  gap: 14px;
+  overflow: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
 }
-
-.hScroll::-webkit-scrollbar {
-    display: none;
-}
+.hScroll::-webkit-scrollbar { display: none; }
 
 .platformItem {
-    width: 95px;
-    height: 95px;
-    border-radius: 22px;
-    overflow: hidden;
-    position: relative;
-    flex: 0 0 auto;
-    border: 1px solid rgba(0, 0, 0, .10);
-    background: rgba(0, 0, 0, .04);
-    cursor: pointer;
+  width: 95px;
+  height: 95px;
+  border-radius: 22px;
+  overflow: hidden;
+  position: relative;
+  flex: 0 0 auto;
+  border: 1px solid rgba(0, 0, 0, .10);
+  background: rgba(0, 0, 0, .04);
+  cursor: pointer;
 }
 
 .platformItem img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .screensRow {
-    display: flex;
-    gap: 14px;
-    overflow: auto;
-    padding-bottom: 8px;
-    scrollbar-width: none;
+  display: flex;
+  gap: 14px;
+  overflow: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
 }
-
-.screensRow::-webkit-scrollbar {
-    display: none;
-}
+.screensRow::-webkit-scrollbar { display: none; }
 
 .screenItem {
-    width: 220px;
-    /* ajusta el tamaño en pantalla */
-    aspect-ratio: 9 / 16;
-    /* ✅ equivalente a 1080x1920 */
-    height: auto;
-    /* se calcula solo */
-    border-radius: 26px;
-    overflow: hidden;
-    flex: 0 0 auto;
-    border: 1px solid rgba(0, 0, 0, .10);
-    cursor: pointer;
+  width: 260px;
+  height: 220px;
+  border-radius: 26px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 1px solid rgba(0, 0, 0, .10);
+  cursor: pointer;
 }
 
 .screenItem img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* llena el cuadro */
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .reviewsCard .cardTitle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .reviewsList {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 /* Bottom nav se queda igual */
 .bottomNav {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 16px;
-    width: calc(100% - 34px);
-    max-width: 520px;
-    height: 62px;
-    background: rgba(255, 255, 255, .95);
-    border-radius: 999px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
-    z-index: 50;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 16px;
+  width: calc(100% - 34px);
+  max-width: 520px;
+  height: 62px;
+  background: rgba(255, 255, 255, .95);
+  border-radius: 999px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+  z-index: 50;
 }
 
 .navBtn {
-    width: 46px;
-    height: 46px;
-    border-radius: 999px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    display: grid;
-    place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
 }
 
-.navBtn.active {
-    background: rgba(0, 0, 0, .08);
-}
+.navBtn.active { background: rgba(0, 0, 0, .08); }
 
 .navIcon {
-    width: 22px;
-    height: 22px;
-    fill: none;
-    stroke: rgba(0, 0, 0, .72);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: rgba(0, 0, 0, .72);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Drawer (se queda igual) */
 .drawer {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
 }
-
-.drawer.open {
-    display: block;
-}
+.drawer.open { display: block; }
 
 .drawer__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, .45);
-    z-index: 1;
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, .45);
+  z-index: 1;
 }
 
 .drawer__panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 78%;
-    max-width: 320px;
-    height: 100%;
-    background: rgba(20, 20, 28, .92);
-    backdrop-filter: blur(12px);
-    border-right: 1px solid rgba(255, 255, 255, .10);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, .35);
-    padding: 16px;
-    z-index: 2;
-    color: rgba(255, 255, 255, .92);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 78%;
+  max-width: 320px;
+  height: 100%;
+  background: rgba(20, 20, 28, .92);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, .10);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .35);
+  padding: 16px;
+  z-index: 2;
+  color: rgba(255, 255, 255, .92);
 }
 
 .drawer__title {
-    font-weight: 900;
-    font-size: 18px;
+  font-weight: 900;
+  font-size: 18px;
 }
 
 .drawerItem {
-    width: 100%;
-    padding: 14px 12px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, .06);
-    border: 1px solid rgba(255, 255, 255, .08);
-    color: rgba(255, 255, 255, .92);
-    font-weight: 800;
-    text-align: left;
-    cursor: pointer;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 14px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .92);
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 /* =========================
    ✅ SHEETS
    ========================= */
 .sheet {
-    position: fixed;
-    inset: 0;
-    z-index: 120;
-    display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: none;
 }
-
-.sheet.open {
-    display: block;
-}
+.sheet.open { display: block; }
 
 /* sin overlay */
 .sheet__backdrop {
-    display: none !important;
-    pointer-events: none !important;
+  display: none !important;
+  pointer-events: none !important;
 }
 
 /* ✅ Por defecto: sheets CLAROS */
 .sheet__panel {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 0;
-    width: min(560px, 100%);
-    height: 55vh;
-    background: rgba(255, 255, 255, .96);
-    border-top-left-radius: 26px;
-    border-top-right-radius: 26px;
-    border: 1px solid rgba(0, 0, 0, .10);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
-    padding: 10px 16px 16px;
-    overflow: auto;
-    z-index: 2;
-    color: rgba(0, 0, 0, .92);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: min(560px, 100%);
+  height: 55vh;
+  background: rgba(255, 255, 255, .96);
+  border-top-left-radius: 26px;
+  border-top-right-radius: 26px;
+  border: 1px solid rgba(0, 0, 0, .10);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+  padding: 10px 16px 16px;
+  overflow: auto;
+  z-index: 2;
+  color: rgba(0, 0, 0, .92);
 }
 
 /* ✅ IMPORTANTE: Modal de CALIFICACIONES ahora también BLANCO + textos negros */
-#ratingsSheet .sheet__panel {
-    background: rgba(255, 255, 255, .98) !important;
-    border: 1px solid rgba(0, 0, 0, .10) !important;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, .18) !important;
-    color: rgba(0, 0, 0, .92) !important;
+#ratingsSheet .sheet__panel{
+  background: rgba(255,255,255,.98) !important;
+  border: 1px solid rgba(0,0,0,.10) !important;
+  box-shadow: 0 18px 45px rgba(0,0,0,.18) !important;
+  color: rgba(0,0,0,.92) !important;
 }
 
 /* Handle */
 .sheet__handle {
-    width: 52px;
-    height: 5px;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, .18);
-    margin: 6px auto 10px;
+  width: 52px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .18);
+  margin: 6px auto 10px;
 }
 
 .sheet__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .sheet__title {
-    font-weight: 900;
-    font-size: 18px;
-    color: rgba(0, 0, 0, .92);
+  font-weight: 900;
+  font-size: 18px;
+  color: rgba(0,0,0,.92);
 }
 
 .sheet__summary {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin: 10px 0 12px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 10px 0 12px;
 }
 
 /* ✅ Número GRANDE blanco (en “pastilla” negra) */
-#ratingsSheet .sheet__big {
-    font-size: 34px;
-    font-weight: 900;
-    color: #fff !important;
-    background: rgba(0, 0, 0, .88);
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 16px;
-    line-height: 1;
+#ratingsSheet .sheet__big{
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff !important;
+  background: rgba(0,0,0,.88);
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 16px;
+  line-height: 1;
 }
 
 /* ✅ Texto pequeño negro */
-#ratingsSheet .sheet__small {
-    color: rgba(0, 0, 0, .60) !important;
-    font-weight: 800;
+#ratingsSheet .sheet__small{
+  color: rgba(0,0,0,.60) !important;
+  font-weight: 800;
 }
 
 /* ✅ Estrella amarilla (si aparece en algún texto del sheet) */
-#ratingsSheet .star {
-    color: #f5b301 !important;
-}
+#ratingsSheet .star{ color:#f5b301 !important; }
 
 .breakdown {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 /* Row de barras */
 .rowBar {
-    display: grid;
-    grid-template-columns: 44px 1fr 50px;
-    align-items: center;
-    gap: 10px;
-    color: rgba(0, 0, 0, .85);
-    font-weight: 800;
+  display: grid;
+  grid-template-columns: 44px 1fr 50px;
+  align-items: center;
+  gap: 10px;
+  color: rgba(0,0,0,.85);
+  font-weight: 800;
 }
 
 .bar {
-    height: 10px;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, .08);
-    overflow: hidden;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .08);
+  overflow: hidden;
 }
 
-.bar>div {
-    height: 100%;
-    width: 0%;
-    background: rgba(0, 0, 0, .45);
+.bar > div {
+  height: 100%;
+  width: 0%;
+  background: rgba(0, 0, 0, .45);
 }
 
 /* ✅ Colores por “fila” (asumiendo orden 5→1 en tu breakdown) */
-#ratingsSheet .breakdown .rowBar:nth-child(1) .bar>div {
-    background: #22c55e;
-}
+#ratingsSheet .breakdown .rowBar:nth-child(1) .bar > div { background: #22c55e; } /* 5 ★ verde */
+#ratingsSheet .breakdown .rowBar:nth-child(2) .bar > div { background: #84cc16; } /* 4 ★ verde-lima */
+#ratingsSheet .breakdown .rowBar:nth-child(3) .bar > div { background: #f59e0b; } /* 3 ★ ámbar */
+#ratingsSheet .breakdown .rowBar:nth-child(4) .bar > div { background: #fb923c; } /* 2 ★ naranja */
+#ratingsSheet .breakdown .rowBar:nth-child(5) .bar > div { background: #ef4444; } /* 1 ★ rojo */
 
-/* 5 ★ verde */
-#ratingsSheet .breakdown .rowBar:nth-child(2) .bar>div {
-    background: #84cc16;
-}
-
-/* 4 ★ verde-lima */
-#ratingsSheet .breakdown .rowBar:nth-child(3) .bar>div {
-    background: #f59e0b;
-}
-
-/* 3 ★ ámbar */
-#ratingsSheet .breakdown .rowBar:nth-child(4) .bar>div {
-    background: #fb923c;
-}
-
-/* 2 ★ naranja */
-#ratingsSheet .breakdown .rowBar:nth-child(5) .bar>div {
-    background: #ef4444;
-}
-
-/* 1 ★ rojo */
-
-.sheet__actions {
-    margin-top: 16px;
-}
-
-.sheet__actions--below {
-    margin-top: 14px;
-    margin-bottom: 12px;
-}
+.sheet__actions { margin-top: 16px; }
+.sheet__actions--below { margin-top: 14px; margin-bottom: 12px; }
 
 .primaryBtn {
-    width: 100%;
-    height: 48px;
-    border: none;
-    border-radius: 18px;
-    background: var(--primary);
-    color: #fff;
-    font-weight: 900;
-    cursor: pointer;
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 18px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
 }
 
 .sheet__hint {
-    margin-top: 10px;
-    color: rgba(0, 0, 0, .55);
-    font-weight: 700;
-    font-size: 12px;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, .55);
+  font-weight: 700;
+  font-size: 12px;
 }
 
 /* Form */
-.form {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+.form { display: flex; flex-direction: column; gap: 12px; }
 
 .field span {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 900;
-    font-size: 13px;
-    color: rgba(0, 0, 0, .80);
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(0, 0, 0, .80);
 }
 
 .field input,
 .field textarea,
 .field select {
-    width: 100%;
-    padding: 12px 12px;
-    border-radius: 14px;
-    border: 1px solid rgba(0, 0, 0, .12);
-    outline: none;
-    background: rgba(0, 0, 0, .03);
-    color: rgba(0, 0, 0, .90);
-    font-weight: 700;
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  outline: none;
+  background: rgba(0, 0, 0, .03);
+  color: rgba(0, 0, 0, .90);
+  font-weight: 700;
 }
 
 /* =========================
    ✅ Reseñas dentro del sheet (fondo blanco)
    ========================= */
 .sheetReviewsWrap {
-    margin-top: 14px;
-    padding: 14px;
-    border-radius: 22px;
-    background: rgba(255, 255, 255, .96);
-    color: #111;
-    border: 1px solid rgba(0, 0, 0, .10);
-    box-shadow: 0 14px 40px rgba(0, 0, 0, .12);
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .96);
+  color: #111;
+  border: 1px solid rgba(0, 0, 0, .10);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, .12);
 }
 
 .sheetReviewsHeader {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 8px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 
 .sheetReviewsTitle {
-    font-size: 22px;
-    font-weight: 900;
-    letter-spacing: -.02em;
-    color: rgba(0, 0, 0, .92);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+  color: rgba(0, 0, 0, .92);
 }
 
 .sheetReviewsCount {
-    font-weight: 800;
-    color: rgba(0, 0, 0, .55);
-    white-space: nowrap;
+  font-weight: 800;
+  color: rgba(0, 0, 0, .55);
+  white-space: nowrap;
 }
 
 .sheetReviewsList {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .reviewItem {
-    display: flex;
-    gap: 12px;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .10);
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .10);
 }
 
 .reviewItem:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .reviewItem .reviewAvatar {
-    width: 54px;
-    height: 54px;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, .10);
-    flex: 0 0 auto;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, .10);
+  flex: 0 0 auto;
 }
 
 .reviewItem .reviewAvatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.reviewContent {
-    flex: 1;
-    min-width: 0;
-}
+.reviewContent { flex: 1; min-width: 0; }
 
 .reviewStarsRow {
-    font-size: 18px;
-    letter-spacing: 2px;
-    color: #f5b301;
-    line-height: 1;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #f5b301;
+  line-height: 1;
 }
 
 .reviewMeta {
-    margin-top: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    color: rgba(0, 0, 0, .92);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  color: rgba(0, 0, 0, .92);
 }
 
-.reviewMeta .reviewName {
-    font-weight: 900;
-}
+.reviewMeta .reviewName { font-weight: 900; }
 
 .reviewMeta .reviewDay {
-    font-weight: 800;
-    color: rgba(0, 0, 0, .55);
+  font-weight: 800;
+  color: rgba(0, 0, 0, .55);
 }
 
 .reviewService {
-    margin-top: 3px;
-    font-weight: 800;
-    font-size: 14px;
-    color: rgba(0, 0, 0, .55);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  margin-top: 3px;
+  font-weight: 800;
+  font-size: 14px;
+  color: rgba(0, 0, 0, .55);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .reviewText2 {
-    margin-top: 10px;
-    color: rgba(0, 0, 0, .90);
-    line-height: 1.35;
-    font-weight: 500;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, .90);
+  line-height: 1.35;
+  font-weight: 500;
 }
 
 .helpfulRow {
-    margin-top: 12px;
-    display: flex;
-    justify-content: flex-start;
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .helpfulBtn {
-    border: none;
-    background: transparent;
-    color: rgba(0, 0, 0, .60);
-    font-weight: 900;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 2px;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, .60);
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 2px;
 }
 
-.helpfulBtn .heart {
-    font-size: 20px;
-    line-height: 1;
-}
+.helpfulBtn .heart { font-size: 20px; line-height: 1; }
 
-.helpfulBtn.liked {
-    color: var(--primary);
-}
+.helpfulBtn.liked { color: var(--primary); }
 
-.helpfulBtn span {
-    font-weight: 900;
-}
+.helpfulBtn span { font-weight: 900; }
 
 @media (max-width: 420px) {
-    .brandTitle {
-        font-size: 44px;
-        letter-spacing: .22em;
-    }
-
-    .glassPill {
-        min-width: 140px;
-    }
-
-    .screenItem {
-        width: 240px;
-        height: 200px;
-    }
+  .brandTitle { font-size: 44px; letter-spacing: .22em; }
+  .glassPill { min-width: 140px; }
+  .screenItem { width: 240px; height: 200px; }
 }
+
+
+/* ✅ Lightbox (para que NO aparezcan las flechas al final) */
+.lightbox{
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  display: none; /* 👈 clave */
+}
+.lightbox.open{ display: block; }
+
+.lightbox__backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.70);
+  z-index: 1;
+}
+
+.lightbox img{
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: 92vw;
+  max-height: 82vh;
+  border-radius: 18px;
+  z-index: 2;
+  box-shadow: 0 24px 80px rgba(0,0,0,.55);
+}
+
+.lightbox__close{
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255,255,255,.16);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.lightbox__nav{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255,255,255,.16);
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+}
+.lightbox__nav.left{ left: 14px; }
+.lightbox__nav.right{ right: 14px; }
